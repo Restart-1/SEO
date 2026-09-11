@@ -1,141 +1,153 @@
 'use client';
 
 import {
-  AlignLeft, ArrowRight, BarChart3, BrainCircuit, Check, ChevronRight,
-  CircleCheck, KeyRound, LayoutGrid, ListChecks, Menu, MousePointerClick,
-  Play, RotateCcw, Search, Sparkles, Target, X,
+  ArrowLeft, ArrowRight, BarChart3, BookOpen, BrainCircuit, Check, ChevronRight,
+  CircleHelp, FileText, KeyRound, Layers3, ListChecks, LockKeyhole, Menu,
+  MousePointerClick, Play, RotateCcw, Search, Sparkles, Target, Trophy, X,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-const concepts = [
-  { id: 'seo', short: 'SEO', name: 'Search Engine Optimization', icon: Search, tone: 'orange', definition: 'Organiza tu contenido para que Google o YouTube lo entiendan, lo posicionen y lo recomienden.', analogy: 'Es como etiquetar los pasillos de un supermercado: si “Leche” está bien señalizado, el cliente llega rápido.', example: 'Título: “Cómo leer un Estado de Resultados paso a paso”.' },
-  { id: 'aeo', short: 'AEO', name: 'Answer Engine Optimization', icon: BrainCircuit, tone: 'blue', definition: 'Estructura respuestas tan claras que una IA pueda encontrarlas, entenderlas y citarlas directamente.', analogy: 'Es ser la persona del supermercado que no solo señala el pasillo: te entrega el producto exacto y explica por qué sirve.', example: 'Respuesta citable: “Los 3 estados clave son balance, resultados y flujo de efectivo”.' },
-  { id: 'keywords', short: 'Keywords', name: 'Palabras clave', icon: KeyRound, tone: 'yellow', definition: 'Son las frases reales que una audiencia escribe cuando necesita aprender, resolver o comparar algo.', analogy: 'No inventas el nombre del platillo: lees cómo lo pide la gente antes de escribir el menú.', example: 'Mejor: “plantilla de planeación de contenido 2026” que “organización de textos creativos”.' },
-  { id: 'ctr', short: 'CTR', name: 'Click-Through Rate', icon: MousePointerClick, tone: 'pink', definition: 'El porcentaje de personas que hacen clic después de ver tu título y miniatura.', analogy: 'Es el poder del empaque: de 100 personas frente al aparador, ¿cuántas entran?', example: '5 clics por cada 100 impresiones = 5% de CTR.' },
-  { id: 'tldr', short: 'TL;DR', name: 'Too Long; Didn’t Read', icon: AlignLeft, tone: 'green', definition: 'Un resumen ejecutivo que entrega la idea principal antes de desarrollar todos los detalles.', analogy: 'Es el tráiler de una película: te da la promesa y el contexto para decidir si quieres seguir.', example: 'Abre con la respuesta principal durante los primeros 30 segundos.' },
+type Lesson = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  icon: typeof Search;
+  question: string;
+  options: string[];
+  answer: number;
+  feedback: string;
+};
+
+const lessons: Lesson[] = [
+  { id: 'fundamento', eyebrow: 'La idea central', title: 'SEO no es “gustarle a Google”.', lead: 'Es reducir la distancia entre una pregunta real y la mejor respuesta disponible.', icon: Search, question: '¿Cuál definición describe mejor el SEO?', options: ['Repetir una palabra muchas veces', 'Conectar una búsqueda con una respuesta útil', 'Publicar todos los días'], answer: 1, feedback: 'SEO empieza por resolver una intención humana, no por engañar al algoritmo.' },
+  { id: 'recorrido', eyebrow: 'Cómo funciona', title: 'El buscador recorre cuatro estaciones.', lead: 'Antes de recomendarte, necesita descubrir, entender, guardar y ordenar tu contenido.', icon: Layers3, question: 'Si Google todavía no conoce una página, ¿en qué etapa está el problema?', options: ['Rastreo', 'Ranking', 'Conversión'], answer: 0, feedback: 'Sin rastreo no hay lectura; sin lectura no hay posibilidad de aparecer.' },
+  { id: 'intencion', eyebrow: 'La decisión clave', title: 'Una búsqueda siempre esconde una intención.', lead: 'Las mismas palabras pueden pedir aprender, comparar, llegar a un sitio o comprar.', icon: Target, question: '“Mejor app para planear contenido” expresa una intención de…', options: ['Navegación', 'Comparación', 'Compra inmediata'], answer: 1, feedback: 'La palabra “mejor” suele indicar que la persona está comparando alternativas.' },
+  { id: 'keywords', eyebrow: 'Palabras clave', title: 'No elijas la frase más elegante. Elige la más buscable.', lead: 'Una buena keyword usa el lenguaje del alumno, define el problema y deja clara la promesa.', icon: KeyRound, question: '¿Qué frase tiene una intención más clara para un tutorial?', options: ['Ideas y creatividad digital', 'Cómo hacer un calendario de contenido mensual', 'Reflexiones sobre comunicación'], answer: 1, feedback: 'Incluye acción, objeto y alcance: hacer + calendario de contenido + mensual.' },
+  { id: 'empaque', eyebrow: 'Título + descripción', title: 'El empaque debe prometer una respuesta específica.', lead: 'El título gana la mirada; la descripción confirma el contexto sin repetir por repetir.', icon: FileText, question: '¿Qué título comunica mejor el resultado?', options: ['Estados financieros explicados', 'Finanzas 2026', 'Cómo leer un Estado de Resultados paso a paso'], answer: 2, feedback: 'Incluye la tarea concreta, el objeto y el nivel de acompañamiento.' },
+  { id: 'clic', eyebrow: 'CTR', title: 'El clic mide si tu promesa resulta irresistible.', lead: 'CTR es la proporción de personas que hacen clic después de ver tu título y miniatura.', icon: MousePointerClick, question: 'Tu miniatura tuvo 2,000 impresiones y 120 clics. ¿Cuál fue su CTR?', options: ['6%', '12%', '16%'], answer: 0, feedback: '120 ÷ 2,000 × 100 = 6%. Compáralo siempre con videos y fuentes similares.' },
+  { id: 'retencion', eyebrow: 'Después del clic', title: 'El CTR abre la puerta; la retención demuestra valor.', lead: 'Si el título promete una cosa y el video tarda en entregarla, el usuario se va.', icon: BarChart3, question: '¿Qué apertura protege mejor la retención?', options: ['Una historia personal de tres minutos', 'La respuesta principal y el mapa del video', 'Una animación larga del logotipo'], answer: 1, feedback: 'Entrega valor temprano y luego explica cómo profundizarás.' },
+  { id: 'senales', eyebrow: 'SEO para video', title: 'YouTube escucha, lee y observa.', lead: 'Título, descripción, capítulos y subtítulos dan contexto; clics y permanencia validan la utilidad.', icon: ListChecks, question: '¿Qué combinación ofrece señales más completas?', options: ['Título llamativo + hashtags', 'Título claro + capítulos + SRT + buena retención', 'Descripción larga sin estructura'], answer: 1, feedback: 'Combina señales textuales para entender y señales humanas para validar.' },
 ];
 
-const quiz = [
-  { question: '¿Qué señal le dice a YouTube que tu “empaque” funciona?', options: ['La duración total', 'El CTR', 'La cantidad de capítulos'], answer: 1 },
-  { question: '¿Qué formato facilita que una IA extraiga una respuesta?', options: ['Una introducción larga', 'Texto ambiguo', 'Pregunta + respuesta directa'], answer: 2 },
-  { question: '¿Qué optimiza principalmente el AEO?', options: ['Ser una fuente citable', 'Solo conseguir clics', 'Usar más hashtags'], answer: 0 },
-];
+const finalQuiz = [
+  ['¿Cuál es el punto de partida de una estrategia SEO?', ['La intención de búsqueda', 'La miniatura', 'La duración'], 0],
+  ['¿Qué ocurre antes de que una página pueda posicionarse?', ['Se comparte', 'Se rastrea e indexa', 'Se monetiza'], 1],
+  ['“Cómo calcular margen bruto” tiene intención…', ['Informativa', 'Navegacional', 'Transaccional'], 0],
+  ['¿Qué keyword es más específica?', ['Contenido', 'Marketing', 'Plantilla de calendario de contenido 2026'], 2],
+  ['¿Qué mide el CTR?', ['Clics sobre impresiones', 'Minutos sobre clics', 'Comentarios sobre vistas'], 0],
+  ['500 clics de 10,000 impresiones equivalen a…', ['0.5%', '5%', '50%'], 1],
+  ['¿Qué valida la retención?', ['Que el empaque funciona', 'Que el contenido mantiene su promesa', 'Que el archivo tiene subtítulos'], 1],
+  ['¿Para qué sirven los capítulos descriptivos?', ['Para alargar el video', 'Para indexar temas concretos', 'Para ocultar la descripción'], 1],
+  ['¿Qué archivo ayuda a un buscador a leer un video?', ['SRT', 'JPG', 'ZIP'], 0],
+  ['¿Cuál es la mejor relación entre SEO y audiencia?', ['Optimizar para robots aunque confunda', 'Ayudar a personas y dar señales claras a máquinas', 'Usar keywords sin contexto'], 1],
+] as const;
 
 export default function Home() {
-  const [activeConcept, setActiveConcept] = useState(0);
-  const [activeModule, setActiveModule] = useState('diccionario');
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [lessonIndex, setLessonIndex] = useState(0);
+  const [practiceAnswers, setPracticeAnswers] = useState<Record<number, number>>({});
+  const [mobileNav, setMobileNav] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const current = concepts[activeConcept];
-  const currentQuiz = quiz[quizIndex];
-  const score = answers.filter((answer, index) => answer === quiz[index].answer).length;
+  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+  const lesson = lessons[lessonIndex];
+  const LessonIcon = lesson.icon;
+
+  const practiceStats = useMemo(() => {
+    const attempted = Object.keys(practiceAnswers).length;
+    const correct = Object.entries(practiceAnswers).filter(([key, value]) => lessons[Number(key)].answer === value).length;
+    return { attempted, correct, accuracy: attempted ? Math.round(correct / attempted * 100) : 0 };
+  }, [practiceAnswers]);
+
+  const finalScore = quizAnswers.filter((answer, index) => answer === finalQuiz[index][2]).length;
+  const finalFinished = quizAnswers.length === finalQuiz.length;
 
   useEffect(() => {
-    type ModuleId = 'diccionario' | 'algoritmos' | 'proyectos' | 'practica';
     type WebContext = { registerTool?: (tool: unknown, options?: { signal?: AbortSignal }) => void | Promise<void> };
     const context = (document as Document & { modelContext?: WebContext }).modelContext;
     if (!context?.registerTool) return;
     const lifecycle = new AbortController();
-    const allowed: ModuleId[] = ['diccionario', 'algoritmos', 'proyectos', 'practica'];
     void Promise.resolve(context.registerTool({
-      name: 'open_learning_module',
-      title: 'Abrir módulo de aprendizaje',
-      description: 'Navega al módulo visible solicitado de Creador Lab.',
-      inputSchema: { type: 'object', properties: { module: { type: 'string', enum: allowed } }, required: ['module'], additionalProperties: false },
+      name: 'open_seo_lesson', title: 'Abrir lección SEO',
+      description: 'Abre una lección visible del recorrido SEO de Creador Lab por su identificador.',
+      inputSchema: { type: 'object', properties: { lesson: { type: 'string', enum: lessons.map((item) => item.id) } }, required: ['lesson'], additionalProperties: false },
       annotations: { readOnlyHint: false, untrustedContentHint: false },
       execute(input: unknown) {
-        const module = (input as { module?: string })?.module;
-        if (!allowed.includes(module as ModuleId)) throw new Error('Módulo no válido');
-        setActiveModule(module as ModuleId);
-        document.getElementById(module as string)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return { module, status: 'opened' };
+        const id = (input as { lesson?: string })?.lesson;
+        const index = lessons.findIndex((item) => item.id === id);
+        if (index < 0) throw new Error('Lección no válida');
+        setLessonIndex(index); window.scrollTo({ top: 0, behavior: 'smooth' });
+        return { lesson: id, status: 'opened' };
       },
     }, { signal: lifecycle.signal })).catch(() => undefined);
     return () => lifecycle.abort();
   }, []);
 
-  const jumpTo = (id: string) => {
-    setActiveModule(id); setMobileOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const goToLesson = (index: number) => {
+    setLessonIndex(Math.max(0, Math.min(lessons.length - 1, index)));
+    setMobileNav(false); window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const answerQuiz = (option: number) => {
-    if (answers[quizIndex] !== undefined) return;
-    setAnswers((existing) => { const next = [...existing]; next[quizIndex] = option; return next; });
-  };
-  const restartQuiz = () => { setAnswers([]); setQuizIndex(0); };
+
+  const resetQuiz = () => { setQuizAnswers([]); setQuizIndex(0); };
 
   return (
-    <main>
-      <header className="topbar">
-        <button className="brand" onClick={() => jumpTo('inicio')} aria-label="Ir al inicio"><span className="brand-mark">C</span><span>Creador Lab</span></button>
-        <nav className="desktop-nav" aria-label="Navegación principal">
-          {([['diccionario', 'Diccionario'], ['algoritmos', 'Cómo funciona'], ['proyectos', 'Proyectos']] as const).map(([id, label]) => (
-            <button key={id} className={activeModule === id ? 'active' : ''} onClick={() => jumpTo(id)}>{label}</button>
-          ))}
-        </nav>
-        <button className="header-cta" onClick={() => jumpTo('practica')}><Play size={15} fill="currentColor" /> Practicar</button>
-        <button className="menu-button" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Abrir menú">{mobileOpen ? <X /> : <Menu />}</button>
-        {mobileOpen && <div className="mobile-menu"><button onClick={() => jumpTo('diccionario')}>Diccionario</button><button onClick={() => jumpTo('algoritmos')}>Cómo funciona</button><button onClick={() => jumpTo('proyectos')}>Proyectos</button><button onClick={() => jumpTo('practica')}>Practicar</button></div>}
+    <main className="course-shell">
+      <header className="course-header">
+        <button className="brand" onClick={() => goToLesson(0)} aria-label="Ir al inicio"><span className="brand-mark">C</span><span>Creador Lab</span></button>
+        <div className="header-path"><span>Ruta actual</span><b>Fundamentos de SEO</b></div>
+        <div className="header-progress"><span>{lessonIndex + 1} / {lessons.length}</span><div><i style={{ width: `${((lessonIndex + 1) / lessons.length) * 100}%` }} /></div></div>
+        <Dialog open={quizOpen} onOpenChange={setQuizOpen}>
+          <DialogTrigger render={<Button className="quiz-trigger" />}><CircleHelp /> Evaluación final</DialogTrigger>
+          <DialogContent className="quiz-dialog" showCloseButton={false}>
+            <DialogHeader><DialogTitle>Evaluación final de SEO</DialogTitle><DialogDescription>10 preguntas · resultado porcentual al terminar</DialogDescription></DialogHeader>
+            <button className="dialog-close" onClick={() => setQuizOpen(false)} aria-label="Cerrar"><X /></button>
+            {finalFinished ? (
+              <div className="final-result"><span><Trophy /></span><small>RESULTADO FINAL</small><h3>{Math.round(finalScore / finalQuiz.length * 100)}%</h3><p>{finalScore} aciertos · {finalQuiz.length - finalScore} desaciertos</p><b>{finalScore >= 8 ? 'Dominio sólido. Ya puedes pasar a AEO.' : 'Conviene repasar las lecciones marcadas antes de avanzar.'}</b><button onClick={resetQuiz}><RotateCcw /> Volver a intentar</button></div>
+            ) : (
+              <div className="final-question">
+                <div className="quiz-counter"><span>Pregunta {quizIndex + 1} de {finalQuiz.length}</span><div>{finalQuiz.map((_, i) => <i key={i} className={i <= quizIndex ? 'on' : ''}/>)}</div></div>
+                <h3>{finalQuiz[quizIndex][0]}</h3>
+                <div className="final-options">{finalQuiz[quizIndex][1].map((option, i) => <button key={option} onClick={() => { const next = [...quizAnswers]; next[quizIndex] = i; setQuizAnswers(next); setTimeout(() => setQuizIndex((old) => old + 1), 180); }}><span>{String.fromCharCode(65 + i)}</span>{option}</button>)}</div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+        <button className="mobile-nav-button" onClick={() => setMobileNav(!mobileNav)} aria-label="Abrir temario">{mobileNav ? <X /> : <Menu />}</button>
       </header>
 
-      <section className="hero" id="inicio">
-        <div className="hero-copy">
-          <div className="eyebrow"><Sparkles size={14} /> Guía práctica para creadores</div>
-          <h1>Haz contenido que los algoritmos <em>sí entiendan.</em></h1>
-          <p>Aprende a ser visible en buscadores y a convertirte en la respuesta que las inteligencias artificiales deciden citar.</p>
-          <div className="hero-actions"><button className="primary-button" onClick={() => jumpTo('diccionario')}>Empezar el recorrido <ArrowRight size={18} /></button><span><CircleCheck size={17} /> 3 módulos · ejemplos reales</span></div>
-        </div>
-        <div className="hero-board" aria-label="Comparación entre SEO y AEO">
-          <div className="board-top"><span>Tu contenido</span><span className="live-dot">EN LÍNEA</span></div>
-          <div className="content-card"><div className="thumbnail-mini"><BarChart3 size={34} /></div><div><strong>Cómo leer un Estado de Resultados</strong><small>Guía paso a paso · 08:42</small></div></div>
-          <div className="signal-row"><div className="signal seo-signal"><Search size={18} /><span><b>SEO</b>Te encuentra</span><strong>↑ 82</strong></div><div className="signal aeo-signal"><BrainCircuit size={18} /><span><b>AEO</b>Te cita</span><strong>✓</strong></div></div>
-          <div className="board-note">Una pieza. Dos caminos para ser descubierto.</div>
-        </div>
-      </section>
+      <aside className={`course-sidebar ${mobileNav ? 'open' : ''}`}>
+        <div className="sidebar-intro"><span>MÓDULO 01</span><h2>SEO desde cero</h2><p>Una idea por pantalla. Avanza a tu ritmo.</p></div>
+        <nav aria-label="Lecciones SEO">{lessons.map((item, index) => { const Icon = item.icon; const answered = practiceAnswers[index] !== undefined; const correct = answered && practiceAnswers[index] === item.answer; return <button key={item.id} className={lessonIndex === index ? 'current' : ''} onClick={() => goToLesson(index)}><span className={`nav-index ${answered ? (correct ? 'done' : 'miss') : ''}`}>{answered ? (correct ? <Check /> : '•') : String(index + 1).padStart(2, '0')}</span><span><b>{item.eyebrow}</b><small>{item.title}</small></span><ChevronRight /></button>; })}</nav>
+        <div className="score-card"><div><span>Prácticas rápidas</span><b>{practiceStats.attempted}/{lessons.length}</b></div><div className="score-bar"><i style={{ width: `${practiceStats.accuracy}%` }}/></div><p><strong>{practiceStats.accuracy}%</strong> acierto · <strong>{practiceStats.attempted ? 100 - practiceStats.accuracy : 0}%</strong> desacierto</p></div>
+        <div className="coming-next"><span><LockKeyhole /> MÓDULO 02</span><b>AEO y respuestas citables</b><small>Disponible después de dominar SEO</small></div>
+      </aside>
 
-      <section className="section dictionary" id="diccionario">
-        <div className="section-heading"><div><span className="module-label">MÓDULO 01</span><h2>El diccionario del creador</h2></div><p>Cinco conceptos, sin jerga complicada. Elige uno para explorarlo.</p></div>
-        <div className="concept-tabs" role="tablist" aria-label="Conceptos">
-          {concepts.map((concept, index) => { const Icon = concept.icon; return <button key={concept.id} role="tab" aria-selected={activeConcept === index} className={`concept-tab ${activeConcept === index ? 'selected' : ''}`} onClick={() => setActiveConcept(index)}><Icon size={18} /> {concept.short}</button>; })}
-        </div>
-        <article className={`concept-feature tone-${current.tone}`}>
-          <div className="concept-title"><span className="concept-icon"><current.icon size={28} /></span><div><span>{current.name}</span><h3>{current.short}</h3></div></div>
-          <p className="definition">{current.definition}</p>
-          <div className="analogy-card"><span>PIÉNSALO ASÍ</span><p>“{current.analogy}”</p></div>
-          <div className="example-strip"><Target size={18} /><span><b>En la práctica:</b> {current.example}</span></div>
-        </article>
-      </section>
+      <section className="lesson-stage">
+        <div className="lesson-topline"><span>LECCIÓN {String(lessonIndex + 1).padStart(2, '0')}</span><span>≈ {lessonIndex === 3 || lessonIndex === 5 ? '6' : '4'} min</span></div>
+        <div className="lesson-heading"><span className="lesson-icon"><LessonIcon /></span><div><p>{lesson.eyebrow}</p><h1>{lesson.title}</h1><h2>{lesson.lead}</h2></div></div>
 
-      <section className="section algorithms" id="algoritmos">
-        <div className="section-heading light-heading"><div><span className="module-label">MÓDULO 02</span><h2>¿Cómo “ven” tu contenido?</h2></div><p>Los dos sistemas leen señales distintas. Dales exactamente lo que necesitan.</p></div>
-        <div className="comparison-grid">
-          <article className="engine-card traditional"><div className="engine-head"><span><Search /></span><div><small>MOTOR TRADICIONAL</small><h3>Google + YouTube</h3></div></div><p>Primero interpreta tu empaque; después observa cómo reacciona la audiencia.</p><ol><li><span>01</span><div><b>Lee tus metadatos</b><small>Título, descripción, keywords y subtítulos SRT.</small></div></li><li><span>02</span><div><b>Mide el clic</b><small>Un buen CTR confirma que el tema y el empaque interesan.</small></div></li><li><span>03</span><div><b>Observa la retención</b><small>Si la gente se queda, aumenta la recomendación.</small></div></li></ol><div className="formula"><b>Visibilidad</b><span>=</span><i>Relevancia</i><span>×</span><i>Comportamiento</i></div></article>
-          <article className="engine-card ai-engine"><div className="engine-head"><span><BrainCircuit /></span><div><small>AGENTE DE IA</small><h3>Gemini + Perplexity</h3></div></div><p>Busca fragmentos autónomos, precisos y fáciles de convertir en una respuesta.</p><ol><li><span>01</span><div><b>Escanea texto estructurado</b><small>Transcripciones, artículos, tablas, listas y foros.</small></div></li><li><span>02</span><div><b>Reconoce entidades</b><small>Personas, marcas, conceptos y relaciones semánticas.</small></div></li><li><span>03</span><div><b>Extrae la respuesta</b><small>Premia claridad, evidencia y formato pregunta-respuesta.</small></div></li></ol><div className="formula"><b>Ser citado</b><span>=</span><i>Claridad</i><span>×</span><i>Autoridad</i></div></article>
+        <div className="lesson-content">
+          {lessonIndex === 0 && <><div className="core-idea"><span>USUARIO</span><ArrowRight/><span className="search-pill">“¿Cómo leo mis resultados?”</span><ArrowRight/><span>RESPUESTA ÚTIL</span></div><div className="two-notes"><article><small>NO ES</small><p>Escribir para un robot, llenar un texto de términos repetidos o perseguir trucos.</p></article><article><small>SÍ ES</small><p>Comprender una necesidad y volver tu respuesta fácil de encontrar y entender.</p></article></div></>}
+          {lessonIndex === 1 && <div className="station-flow">{[['01','Rastrear','El buscador descubre la URL.'],['02','Interpretar','Lee texto, estructura y contexto.'],['03','Indexar','Guarda la pieza en su biblioteca.'],['04','Ordenar','Decide cuándo y dónde mostrarla.']].map(([n,t,d]) => <article key={n}><span>{n}</span><b>{t}</b><p>{d}</p></article>)}</div>}
+          {lessonIndex === 2 && <div className="intent-grid">{[['APRENDER','Informativa','“Cómo calcular margen bruto”'],['COMPARAR','Comercial','“Mejor software de finanzas”'],['LLEGAR','Navegacional','“YouTube Studio analíticas”'],['ACTUAR','Transaccional','“Descargar plantilla financiera”']].map(([tag,title,example]) => <article key={tag}><span>{tag}</span><b>{title}</b><p>{example}</p></article>)}</div>}
+          {lessonIndex === 3 && <><div className="keyword-formula"><span>ACCIÓN</span><b>+</b><span>TEMA</span><b>+</b><span>CONTEXTO</span><b>=</b><strong>KEYWORD ÚTIL</strong></div><div className="example-box"><small>EJEMPLO CONSTRUIDO</small><p><i>Cómo hacer</i> + <i>calendario de contenido</i> + <i>mensual</i></p><b>“Cómo hacer un calendario de contenido mensual”</b></div></>}
+          {lessonIndex === 4 && <><div className="title-recipe"><article><span>1</span><p><b>Tarea</b>Cómo leer</p></article><b>+</b><article><span>2</span><p><b>Objeto</b>un Estado de Resultados</p></article><b>+</b><article><span>3</span><p><b>Promesa</b>paso a paso</p></article></div><div className="search-preview"><small>Vista previa en resultados</small><a>Cómo leer un Estado de Resultados paso a paso</a><p>Aprende a identificar ingresos, costos, utilidad bruta y margen con un ejemplo sencillo…</p></div></>}
+          {lessonIndex === 5 && <><div className="ctr-math"><div><strong>120</strong><span>clics</span></div><b>÷</b><div><strong>2,000</strong><span>impresiones</span></div><b>× 100 =</b><div className="result"><strong>6%</strong><span>CTR</span></div></div><div className="callout"><MousePointerClick/><p><b>Importante:</b> no existe un CTR “perfecto” universal. Compáralo con tu historial, la fuente de tráfico y videos semejantes.</p></div></>}
+          {lessonIndex === 6 && <><div className="promise-line"><div><span>TÍTULO</span><b>Promesa</b></div><ArrowRight/><div><span>PRIMEROS 30 S</span><b>Confirmación</b></div><ArrowRight/><div><span>RESTO DEL VIDEO</span><b>Profundidad</b></div></div><div className="tldr-example"><Sparkles/><p><small>APERTURA RECOMENDADA</small>“En este video aprenderás a distinguir los tres estados financieros clave y a leer cada uno sin experiencia previa.”</p></div></>}
+          {lessonIndex === 7 && <div className="signal-map"><div className="signal-source"><Play/><b>Tu video</b></div><div className="signal-list"><span><Check/> Título con intención</span><span><Check/> Descripción contextual</span><span><Check/> Capítulos descriptivos</span><span><Check/> Subtítulos SRT</span><span><Check/> Clic + permanencia</span></div><div className="signal-result"><Search/><b>Contenido entendible</b><small>para personas y buscadores</small></div></div>}
         </div>
-        <div className="insight-banner"><Sparkles size={20} /><span><b>La idea clave:</b> SEO gana la visita. AEO gana la mención. El mejor contenido hace las dos cosas.</span></div>
-      </section>
 
-      <section className="section projects" id="proyectos">
-        <div className="section-heading"><div><span className="module-label">MÓDULO 03</span><h2>De la teoría al entregable</h2></div><p>Dos guiones de acción para producir contenido encontrable y citable.</p></div>
-        <div className="project-stack">
-          <article className="project-card"><div className="project-number">01</div><div className="project-info"><span>PROYECTO · VIDEO EDUCATIVO</span><h3>Estados financieros</h3><p>Enseña a interpretar números sin perder a quien apenas empieza.</p></div><div className="strategy strategy-seo"><div><Search size={17}/><b>Movimiento SEO</b></div><p><strong>Título:</strong> “Cómo leer un Estado de Resultados paso a paso”.</p><small>Miniatura: cifra grande + flecha al margen de ganancia.</small></div><div className="strategy strategy-aeo"><div><BrainCircuit size={17}/><b>Movimiento AEO</b></div><p><strong>TL;DR:</strong> “Los tres estados clave son Balance General, Estado de Resultados y Flujo de Efectivo”.</p><small>Di esa frase de forma literal en los primeros 30 segundos.</small></div></article>
-          <article className="project-card"><div className="project-number">02</div><div className="project-info"><span>PROYECTO · VIDEO TUTORIAL</span><h3>Planeación y difusión</h3><p>Transforma una idea central en un sistema de contenidos multicanal.</p></div><div className="strategy strategy-seo"><div><LayoutGrid size={17}/><b>Movimiento SEO</b></div><p><strong>Capítulo:</strong> “Cómo reciclar contenido para redes”.</p><small>Usa capítulos descriptivos en la línea de tiempo.</small></div><div className="strategy strategy-aeo"><div><ListChecks size={17}/><b>Movimiento AEO</b></div><p><strong>Formato:</strong> muestra un calendario y explica cada columna.</p><small>Menciona entidades: Trello, Notion y TikTok.</small></div></article>
-        </div>
-      </section>
+        <section className="micro-practice" aria-labelledby="practice-title">
+          <div className="practice-label"><span><BookOpen/> PRÁCTICA DE ESTA LECCIÓN</span><small>Cuenta para tu porcentaje de acierto</small></div>
+          <h3 id="practice-title">{lesson.question}</h3>
+          <div className="practice-options">{lesson.options.map((option, index) => { const selected = practiceAnswers[lessonIndex]; const answered = selected !== undefined; const correct = index === lesson.answer; const chosen = selected === index; return <button key={option} disabled={answered} onClick={() => setPracticeAnswers((old) => ({ ...old, [lessonIndex]: index }))} className={answered ? (correct ? 'correct' : chosen ? 'wrong' : 'dim') : ''}><span>{String.fromCharCode(65 + index)}</span>{option}{answered && correct && <Check/>}{answered && chosen && !correct && <X/>}</button>; })}</div>
+          {practiceAnswers[lessonIndex] !== undefined && <div className={`practice-feedback ${practiceAnswers[lessonIndex] === lesson.answer ? 'good' : 'bad'}`}><b>{practiceAnswers[lessonIndex] === lesson.answer ? '¡Correcto!' : 'Casi. Revisa la idea principal.'}</b><span>{lesson.feedback}</span></div>}
+        </section>
 
-      <section className="practice" id="practica">
-        <div className="practice-copy"><span className="module-label">CIERRE RÁPIDO</span><h2>Comprueba lo que aprendiste.</h2><p>Tres preguntas. Menos de un minuto.</p></div>
-        <div className="quiz-card">
-          {answers.length === quiz.length ? <div className="quiz-result"><span className="result-icon"><Check size={28}/></span><small>RESULTADO</small><h3>{score} de {quiz.length}</h3><p>{score === 3 ? 'Listo: ya piensas como creador y como algoritmo.' : 'Buen inicio. Revisa los conceptos y vuelve a intentarlo.'}</p><button onClick={restartQuiz}><RotateCcw size={16}/> Intentar de nuevo</button></div> : <>
-            <div className="quiz-progress"><span>Pregunta {quizIndex + 1} de {quiz.length}</span><div>{quiz.map((_, index) => <i key={index} className={index <= quizIndex ? 'filled' : ''}/>)}</div></div>
-            <h3>{currentQuiz.question}</h3>
-            <div className="quiz-options">{currentQuiz.options.map((option, index) => { const answered = answers[quizIndex] !== undefined; const isCorrect = index === currentQuiz.answer; const isChosen = answers[quizIndex] === index; return <button key={option} onClick={() => answerQuiz(index)} className={answered ? (isCorrect ? 'correct' : isChosen ? 'wrong' : '') : ''}><span>{String.fromCharCode(65 + index)}</span>{option}{answered && isCorrect && <Check size={17}/>}</button>; })}</div>
-            {answers[quizIndex] !== undefined && <button className="next-question" onClick={() => setQuizIndex((q) => q + 1)}>{quizIndex === quiz.length - 1 ? 'Ver resultado' : 'Siguiente pregunta'} <ChevronRight size={17}/></button>}
-          </>}
-        </div>
+        <div className="lesson-nav"><button onClick={() => goToLesson(lessonIndex - 1)} disabled={lessonIndex === 0}><ArrowLeft/> Anterior</button><span>{lessonIndex + 1} de {lessons.length}</span>{lessonIndex < lessons.length - 1 ? <button className="next" onClick={() => goToLesson(lessonIndex + 1)}>Siguiente idea <ArrowRight/></button> : <button className="next" onClick={() => setQuizOpen(true)}>Abrir evaluación <Trophy/></button>}</div>
       </section>
-      <footer><div className="brand"><span className="brand-mark">C</span><span>Creador Lab</span></div><p>Primero ayuda a la persona. Después, facilita que la máquina lo entienda.</p><button onClick={() => jumpTo('inicio')}>Volver arriba ↑</button></footer>
     </main>
   );
 }
