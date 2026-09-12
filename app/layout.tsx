@@ -14,17 +14,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://creador-lab-seo-aeo.dekids-7175.chatgpt.site'),
-  title: 'Creador Lab — SEO desde cero',
-  description: 'Una ruta guiada e interactiva para comprender SEO, palabras clave, CTR, retención y señales de posicionamiento.',
+  title: 'RE:START — SEO + AEO para creadores',
+  description: 'Una clase guiada sobre SEO, palabras clave, buscadores, redes sociales y motores de respuestas.',
   openGraph: {
-    title: 'Creador Lab — SEO desde cero',
-    description: 'Aprende una idea por pantalla y mide tu comprensión con prácticas rápidas.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Creador Lab' }],
+    title: 'RE:START — SEO + AEO para creadores',
+    description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'RE:START · SEO + AEO para creadores' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Creador Lab — SEO desde cero',
-    description: 'Aprende una idea por pantalla y mide tu comprensión con prácticas rápidas.',
+    title: 'RE:START — SEO + AEO para creadores',
+    description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
     images: ['/og.png'],
   },
 };
