@@ -176,3 +176,25 @@ export const concepts: Concept[] = [
 export function getConcept(slug: string) {
   return concepts.find((concept) => concept.slug === slug);
 }
+
+export type PresentationView = 'idea' | 'visual' | 'example' | 'activity';
+
+export type PresentationPage = {
+  slug: string;
+  view: PresentationView;
+  concept: Concept;
+};
+
+export const presentationPages: PresentationPage[] = concepts.flatMap((concept) => {
+  if (concept.activity) return [{ slug: concept.slug, view: 'activity' as const, concept }];
+
+  return [
+    { slug: concept.slug, view: 'idea' as const, concept },
+    { slug: `${concept.slug}-visual`, view: 'visual' as const, concept },
+    { slug: `${concept.slug}-ejemplo`, view: 'example' as const, concept },
+  ];
+});
+
+export function getPresentationPage(slug: string) {
+  return presentationPages.find((page) => page.slug === slug);
+}

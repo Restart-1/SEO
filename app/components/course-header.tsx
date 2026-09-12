@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { CalendarClock, FlaskConical, Maximize2, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { concepts } from '@/lib/course-data';
+import { presentationPages } from '@/lib/course-data';
 
 export function CourseHeader({ active }: { active?: string }) {
   const [open, setOpen] = useState(false);
@@ -31,9 +31,9 @@ export function CourseHeader({ active }: { active?: string }) {
         <span>RECORRIDO DE ENSEÑANZA</span>
         <Link className={active === 'agenda' ? 'drawer-practice active' : 'drawer-practice'} href="/agenda"><CalendarClock /> Agenda de 150 minutos</Link>
         <nav>
-          {concepts.map((concept) => (
-            <Link key={concept.slug} className={active === concept.slug ? 'active' : ''} href={`/conceptos/${concept.slug}`} onClick={() => setOpen(false)}>
-              <em>{concept.number}</em><div><small>{concept.eyebrow}</small><b>{concept.title}</b></div>
+          {presentationPages.map((page) => (
+            <Link key={page.slug} className={`${active === page.slug ? 'active' : ''} ${page.view !== 'idea' && page.view !== 'activity' ? 'subpage' : ''}`} href={`/conceptos/${page.slug}`} onClick={() => setOpen(false)}>
+              <em>{page.view === 'visual' ? '↳' : page.view === 'example' ? '↳' : page.concept.number}</em><div><small>{page.view === 'idea' ? 'IDEA' : page.view === 'visual' ? 'APOYO VISUAL' : page.view === 'example' ? 'EJEMPLO' : page.concept.eyebrow}</small><b>{page.view === 'idea' || page.view === 'activity' ? page.concept.title : page.view === 'visual' ? visualLabel(page.concept.visual) : page.concept.exampleLabel}</b></div>
             </Link>
           ))}
         </nav>
@@ -41,4 +41,13 @@ export function CourseHeader({ active }: { active?: string }) {
       </aside>
     </>
   );
+}
+
+function visualLabel(visual: string) {
+  const labels: Record<string, string> = {
+    bridge: 'Cómo decide el buscador', legacy: 'Caja de herramientas', intent: 'Tres intenciones',
+    content: 'Anatomía de la keyword', signals: 'Señales del video', tiktok: 'Ruta de búsqueda',
+    authority: 'Capas de confianza', aeo: 'Respuesta citable',
+  };
+  return labels[visual] ?? 'Apoyo visual';
 }
