@@ -11,14 +11,14 @@ export default function Home() {
         <div className="cover-copy">
           <span>SESIÓN GUIADA · SEO + AEO</span>
           <h1>Haz que el algoritmo <em>entienda</em> tu contenido.</h1>
-          <p>Una clase en siete conceptos para pasar de “publicar y esperar” a diseñar contenido que una persona pueda encontrar, comprender y recordar.</p>
+          <p>Una clase en ocho conceptos para pasar de “publicar y esperar” a diseñar contenido que una persona pueda encontrar, comprender y recordar.</p>
           <div className="cover-actions">
             <Link href={`/conceptos/${concepts[0].slug}`}><Play/> Comenzar la clase</Link>
             <Link className="secondary" href="/practica"><FlaskConical/> Abrir práctica</Link>
           </div>
         </div>
         <div className="cover-map">
-          <div className="cover-stat"><strong>7</strong><span>CONCEPTOS<br/>UNA IDEA POR PÁGINA</span></div>
+          <div className="cover-stat"><strong>8</strong><span>CONCEPTOS<br/>UNA IDEA POR PÁGINA</span></div>
           <div className="search-demo"><Search/><div><small>LA PREGUNTA DE LA CLASE</small><b>¿Cómo lograr que mi contenido aparezca?</b></div><Sparkles/></div>
           <div className="cover-principle"><i/><p><b>EL RETO:</b> hablar con claridad para dos audiencias al mismo tiempo: las personas y las máquinas.</p></div>
         </div>

@@ -4,19 +4,21 @@ export type Concept = {
   eyebrow: string;
   title: string;
   thesis: string;
+  keywords: [string, string, string];
   explanation: string;
   example: string;
   exampleLabel: string;
   teacherPrompt: string;
   misconception: string;
-  visual: 'bridge' | 'intent' | 'content' | 'signals' | 'platforms' | 'authority' | 'aeo';
+  visual: 'bridge' | 'legacy' | 'intent' | 'content' | 'signals' | 'tiktok' | 'authority' | 'aeo';
 };
 
 export const concepts: Concept[] = [
   {
     slug: 'seo', number: '01', eyebrow: 'CONCEPTO BASE',
-    title: 'SEO es ayudar a una máquina a entender para quién es útil tu contenido.',
-    thesis: 'No se trata de repetir palabras. Se trata de conectar una pregunta real con una respuesta clara, relevante y fácil de descubrir.',
+    title: 'SEO ayuda al buscador a decidir qué contenido mostrar.',
+    thesis: 'El navegador abre la puerta; el buscador ordena las respuestas.',
+    keywords: ['ENTENDER', 'CLASIFICAR', 'MOSTRAR'],
     explanation: 'Google, YouTube y las redes necesitan clasificar millones de piezas. El SEO les entrega contexto: tema, intención, formato y evidencia de que la respuesta sí ayudó. Por eso el trabajo empieza antes de grabar: entendiendo qué necesita resolver la audiencia.',
     exampleLabel: 'DEL TEMA A LA BÚSQUEDA',
     example: '“Estados financieros” es un tema. “Cómo leer estados financieros paso a paso” expresa una necesidad concreta y anticipa la solución.',
@@ -25,9 +27,22 @@ export const concepts: Concept[] = [
     visual: 'bridge',
   },
   {
-    slug: 'intencion-de-busqueda', number: '02', eyebrow: 'LA PREGUNTA DETRÁS DE LA FRASE',
-    title: 'La palabra clave funciona cuando representa una intención.',
-    thesis: 'Dos personas pueden buscar el mismo tema, pero esperar respuestas completamente diferentes.',
+    slug: 'seo-antes', number: '02', eyebrow: 'LO QUE ANTES ERA TODO',
+    title: 'Antes, el SEO se concentraba en señales fáciles de manipular.',
+    thesis: 'Repetir keywords, llenar etiquetas y conseguir enlaces podía pesar más que la utilidad real.',
+    keywords: ['REPETICIÓN', 'ETIQUETAS', 'ENLACES'],
+    explanation: 'Durante años, la conversación de SEO giró alrededor de densidad de palabras clave, metaetiquetas, volumen de enlaces y pequeños ajustes técnicos. Algunas bases todavía importan, pero los sistemas actuales combinan contexto, calidad, autoridad y comportamiento humano. La técnica dejó de ser el objetivo; ahora sostiene una respuesta útil.',
+    exampleLabel: 'ANTES → AHORA',
+    example: 'Antes: repetir “estados financieros” muchas veces. Ahora: resolver con claridad una pregunta concreta y demostrar que la respuesta satisface a la audiencia.',
+    teacherPrompt: 'Pregunta qué trucos de posicionamiento ha escuchado el grupo. Clasifíquenlos: ¿base técnica, práctica obsoleta o señal vigente?',
+    misconception: 'Que una técnica haya perdido protagonismo no significa que el SEO técnico ya no importe.',
+    visual: 'legacy',
+  },
+  {
+    slug: 'intencion-de-busqueda', number: '03', eyebrow: 'LA PREGUNTA DETRÁS DE LA FRASE',
+    title: 'Toda búsqueda esconde una intención.',
+    thesis: 'El mismo tema puede pedir una definición, un proceso o una herramienta.',
+    keywords: ['APRENDER', 'HACER', 'OBTENER'],
     explanation: 'Una consulta puede buscar aprender, comparar, llegar a un lugar o realizar una acción. Antes de elegir una keyword, pregunta: “¿qué debería poder hacer la persona después de ver este contenido?”. Esa respuesta define el enfoque, la profundidad y el formato.',
     exampleLabel: 'MISMO TEMA, TRES INTENCIONES',
     example: '“Qué son los estados financieros” pide una definición. “Cómo leer un Estado de Resultados” pide un proceso. “Plantilla de Estado de Resultados” pide una herramienta.',
@@ -36,9 +51,10 @@ export const concepts: Concept[] = [
     visual: 'intent',
   },
   {
-    slug: 'palabras-clave', number: '03', eyebrow: 'LENGUAJE NATURAL',
-    title: 'Una buena keyword suena como una pregunta que alguien sí haría.',
+    slug: 'palabras-clave', number: '04', eyebrow: 'LENGUAJE NATURAL',
+    title: 'La keyword debe sonar humana.',
     thesis: 'Acción + tema + contexto convierte una categoría amplia en una búsqueda utilizable.',
+    keywords: ['ACCIÓN', 'TEMA', 'CONTEXTO'],
     explanation: 'Las plataformas entienden cada vez mejor el lenguaje conversacional. Conviene observar las sugerencias del buscador y las preguntas reales de la audiencia, y después redactar una frase natural. Las palabras clave deben guiar el guion; no tienen que aparecer de forma mecánica en cada línea.',
     exampleLabel: 'ANATOMÍA DE UNA KEYWORD',
     example: 'cómo leer + estados financieros + paso a paso para principiantes',
@@ -47,9 +63,10 @@ export const concepts: Concept[] = [
     visual: 'content',
   },
   {
-    slug: 'como-lee-un-video', number: '04', eyebrow: 'SEÑALES DEL CONTENIDO',
-    title: 'El algoritmo escucha, lee y observa la respuesta humana.',
-    thesis: 'Un video comunica su tema en el audio, el texto en pantalla, el título, la descripción y los subtítulos.',
+    slug: 'como-lee-un-video', number: '05', eyebrow: 'SEÑALES DEL CONTENIDO',
+    title: 'El algoritmo escucha, lee y observa.',
+    thesis: 'Audio, texto y comportamiento construyen una misma señal de contexto.',
+    keywords: ['AUDIO', 'TEXTO', 'RETENCIÓN'],
     explanation: 'TikTok, Instagram, YouTube y Google reúnen varias pistas para clasificar una pieza. Las señales editoriales dicen de qué trata; la retención, los guardados, las compartidas y otras interacciones ayudan a estimar si cumplió la promesa. Una señal aislada no reemplaza una experiencia útil.',
     exampleLabel: 'UNA IDEA, CINCO LUGARES',
     example: 'Di “cómo leer un Estado de Resultados”, muéstralo en pantalla, úsalo como base del título, descríbelo con naturalidad y desarrolla exactamente ese proceso.',
@@ -58,20 +75,22 @@ export const concepts: Concept[] = [
     visual: 'signals',
   },
   {
-    slug: 'seo-en-redes', number: '05', eyebrow: 'DESCUBRIMIENTO POR PLATAFORMA',
-    title: 'La misma idea cumple funciones distintas en TikTok, Instagram y YouTube.',
-    thesis: 'Optimizar no significa publicar el mismo empaque en todas partes; significa respetar cómo descubre y profundiza cada audiencia.',
-    explanation: 'El segundo video propone pensar TikTok como descubrimiento, Instagram como relación y YouTube como profundidad. La utilidad de este marco es docente: obliga a decidir qué debe lograr cada versión. En todas, el tema debe ser reconocible desde el inicio y la promesa debe coincidir con el desarrollo.',
-    exampleLabel: 'UNA RUTA POSIBLE',
-    example: 'TikTok: un error común al leer resultados. Instagram: carrusel con las tres preguntas clave. YouTube: tutorial completo con capítulos.',
-    teacherPrompt: 'Asigna una plataforma a cada equipo. Todos reciben el mismo tema y deben cambiar objetivo, apertura y formato.',
-    misconception: 'Copiar exactamente la misma pieza en tres plataformas no es una estrategia multicanal.',
-    visual: 'platforms',
+    slug: 'buscador-de-tiktok', number: '06', eyebrow: 'CÓMO BUSCA TIKTOK',
+    title: 'TikTok convierte cada video en una respuesta posible.',
+    thesis: 'Cruza la consulta con lo que dices, muestras, escribes y con la reacción de la audiencia.',
+    keywords: ['CONSULTA', 'CONTEXTO', 'RESPUESTA'],
+    explanation: 'Cuando alguien busca en TikTok, la plataforma compara la consulta con señales del video: palabras pronunciadas, texto en pantalla, caption, hashtags específicos y tema de la cuenta. Después usa señales de experiencia —como retención, repetición, guardados y compartidas— para ajustar qué resultados parecen más útiles.',
+    exampleLabel: 'RECORRIDO DE UNA BÚSQUEDA',
+    example: 'La persona escribe “cómo leer un estado de resultados”. TikTok identifica videos cuyo audio y texto responden esa frase, y prioriza los que además mantienen la atención.',
+    teacherPrompt: 'Escribe una búsqueda en pantalla. Pide al grupo señalar qué partes del video ayudarían a TikTok a conectarlo con esa consulta.',
+    misconception: 'TikTok no depende únicamente de hashtags: analiza el contenido del video y cómo responde la audiencia.',
+    visual: 'tiktok',
   },
   {
-    slug: 'autoridad-y-presencia', number: '06', eyebrow: 'SEO EN 2026',
-    title: 'Ser claro no basta: una fuente también necesita presencia y autoridad.',
+    slug: 'autoridad-y-presencia', number: '07', eyebrow: 'SEO EN 2026',
+    title: 'La claridad necesita autoridad.',
     thesis: 'Los buscadores y agentes conectan entidades, menciones, referencias y consistencia para decidir qué fuentes merecen confianza.',
+    keywords: ['CONTENIDO', 'AUTORIDAD', 'PRESENCIA'],
     explanation: 'El primer video resume el SEO actual en contenido, autoridad y presencia. El contenido responde con profundidad; la autoridad se construye con experiencia, referencias y menciones; la presencia distribuye esa evidencia en buscadores, directorios y espacios relevantes. El SEO técnico sigue siendo la base: sitio rápido, móvil, seguro y comprensible.',
     exampleLabel: 'DE PIEZA AISLADA A FUENTE',
     example: 'Un tutorial firmado por una persona experta, acompañado por una plantilla, preguntas frecuentes, ejemplos propios y referencias consistentes es más verificable que un texto genérico.',
@@ -80,9 +99,10 @@ export const concepts: Concept[] = [
     visual: 'authority',
   },
   {
-    slug: 'aeo', number: '07', eyebrow: 'DE ENLACES A RESPUESTAS',
-    title: 'AEO organiza la respuesta para que una IA pueda comprenderla y citarla.',
-    thesis: 'En un motor de respuestas, la competencia no termina en el clic: importa convertirse en una fuente clara, específica y comprobable.',
+    slug: 'aeo', number: '08', eyebrow: 'DE ENLACES A RESPUESTAS',
+    title: 'AEO convierte contenido en respuestas citables.',
+    thesis: 'La IA necesita respuestas claras, específicas y comprobables.',
+    keywords: ['RESPONDER', 'ESTRUCTURAR', 'CITAR'],
     explanation: 'Los agentes buscan fragmentos que respondan preguntas concretas, conecten conceptos y presenten hechos fáciles de verificar. Ayudan los encabezados descriptivos, preguntas y respuestas, tablas, listas, datos estructurados y actualizaciones visibles. El SEO tradicional no desaparece: una buena base facilita que esas fuentes sean encontradas.',
     exampleLabel: 'RESPUESTA EXTRAÍBLE',
     example: 'Pregunta: “¿Cuáles son los tres estados financieros clave?”. Respuesta directa: Balance General, Estado de Resultados y Flujo de Efectivo. Después se explica la función de cada uno.',

@@ -18,13 +18,13 @@ export const metadata: Metadata = {
   description: 'Una clase guiada sobre SEO, palabras clave, buscadores, redes sociales y motores de respuestas.',
   openGraph: {
     title: 'RE:START — SEO + AEO para creadores',
-    description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
+    description: 'Ocho conceptos, una idea por página y una práctica de palabras clave.',
     images: [{ url: '/og.svg', width: 1200, height: 630, alt: 'RE:START · SEO + AEO para creadores' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'RE:START — SEO + AEO para creadores',
-    description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
+    description: 'Ocho conceptos, una idea por página y una práctica de palabras clave.',
     images: ['/og.svg'],
   },
 };
