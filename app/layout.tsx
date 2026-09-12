@@ -19,13 +19,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'RE:START — SEO + AEO para creadores',
     description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'RE:START · SEO + AEO para creadores' }],
+    images: [{ url: '/og.svg', width: 1200, height: 630, alt: 'RE:START · SEO + AEO para creadores' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'RE:START — SEO + AEO para creadores',
     description: 'Siete conceptos, una idea por página y una práctica de palabras clave.',
-    images: ['/og.png'],
+    images: ['/og.svg'],
   },
 };
 
