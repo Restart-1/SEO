@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertCircle, Check, FlaskConical, Hash, Images, Lightbulb, Mic2, RotateCcw, Search, Sparkles, Type, Video } from 'lucide-react';
+import { AlertCircle, Check, ChevronRight, Database, FlaskConical, Globe2, Hash, Images, Lightbulb, LoaderCircle, Mic2, RotateCcw, Search, Sparkles, Type, Video } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { CourseHeader } from '@/app/components/course-header';
 
@@ -9,6 +9,33 @@ const examples = [
   'cómo leer estados financieros paso a paso',
   'cómo interpretar un estado de resultados para principiantes',
 ];
+
+type Suggestion = { keyword: string; intent: string; clarity: number };
+
+function detectIntent(value: string) {
+  const clean = normalize(value);
+  if (/^(como|que|cual|por que|guia|tutorial)|aprender|ejemplo/.test(clean)) return 'Informativa';
+  if (/mejor|vs|comparar|opinion|recomendad/.test(clean)) return 'Comparación';
+  if (/precio|comprar|contratar|curso|servicio|cerca/.test(clean)) return 'Comercial';
+  return 'Exploratoria';
+}
+
+function clarityScore(value: string) {
+  const words = normalize(value).split(/\s+/).filter(Boolean);
+  return Math.min(100, 40 + Math.min(words.length, 8) * 6 + (/como|que|mejor|para|cerca|precio/.test(normalize(value)) ? 12 : 0));
+}
+
+function fallbackIdeas(topic: string, industry: string) {
+  const context = industry.trim() ? ` para ${industry.trim()}` : '';
+  return [
+    `qué es ${topic}`,
+    `cómo usar ${topic}${context}`,
+    `${topic} paso a paso${context}`,
+    `errores comunes de ${topic}`,
+    `mejor forma de aprender ${topic}`,
+    `${topic} para principiantes`,
+  ];
+}
 
 function normalize(value: string) {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -33,6 +60,13 @@ export default function PracticePage() {
   const [title, setTitle] = useState('');
   const [screenText, setScreenText] = useState('');
   const [opening, setOpening] = useState('');
+  const [topic, setTopic] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [source, setSource] = useState<'google' | 'youtube'>('google');
+  const [country, setCountry] = useState('mx');
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [researching, setResearching] = useState(false);
+  const [researchMode, setResearchMode] = useState<'live' | 'fallback' | null>(null);
   const result = useMemo(() => evaluateKeyword(keyword), [keyword]);
   const run = () => {
     if (!keyword.trim()) return;
@@ -44,15 +78,49 @@ export default function PracticePage() {
   };
   const suggested = result.score >= 70 ? keyword.trim() : 'cómo leer estados financieros paso a paso para principiantes';
   const packageScore = [title.trim().length >= 20, screenText.trim().length >= 12, opening.trim().length >= 45].filter(Boolean).length;
+  const research = async () => {
+    if (!topic.trim()) return;
+    setResearching(true);
+    try {
+      const params = new URLSearchParams({ q: `${topic.trim()} ${industry.trim()}`.trim(), source, country, language: 'es' });
+      const response = await fetch(`/api/sugerencias?${params}`);
+      const data = await response.json() as { suggestions?: string[]; live?: boolean };
+      const raw = data.suggestions?.length ? data.suggestions : fallbackIdeas(topic.trim(), industry.trim());
+      setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item) })));
+      setResearchMode(data.suggestions?.length && data.live ? 'live' : 'fallback');
+    } catch {
+      setSuggestions(fallbackIdeas(topic.trim(), industry.trim()).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item) })));
+      setResearchMode('fallback');
+    } finally { setResearching(false); }
+  };
+  const chooseSuggestion = (value: string) => {
+    setKeyword(value); setSubmitted(false); setTitle(''); setScreenText(''); setOpening('');
+    document.getElementById('keyword')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   return (
     <main className="restart-app">
       <CourseHeader active="practica" />
       <section className="practice-page">
-        <header className="practice-title"><span><FlaskConical/> PRÁCTICA FINAL · 18 MIN</span><h1>De keyword a <em>pieza publicable.</em></h1><p>El grupo construye un empaque coherente para un reel o video sobre “estados financieros y cómo leerlos”.</p></header>
+        <header className="practice-title"><span><FlaskConical/> LABORATORIO GRATUITO · CUALQUIER TEMA</span><h1>De tema a <em>pieza publicable.</em></h1><p>Descubre búsquedas reales, elige una oportunidad y conviértela en un empaque coherente para video.</p></header>
+        <section className="free-research">
+          <div className="research-heading"><div><span>01 / DESCUBRIMIENTO</span><h2>¿Qué está buscando la gente?</h2></div><div className="free-badge"><Database/> SIN API KEY · SIN DATOS INVENTADOS</div></div>
+          <div className="research-form">
+            <label><span>TEMA O PROBLEMA</span><input value={topic} onChange={(event) => setTopic(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. estados financieros, yoga, repostería…"/></label>
+            <label><span>GIRO O AUDIENCIA · OPCIONAL</span><input value={industry} onChange={(event) => setIndustry(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. emprendedores, restaurantes…"/></label>
+            <label><span>FUENTE</span><select value={source} onChange={(event) => setSource(event.target.value as 'google' | 'youtube')}><option value="google">Google</option><option value="youtube">YouTube</option></select></label>
+            <label><span>PAÍS</span><select value={country} onChange={(event) => setCountry(event.target.value)}><option value="mx">México</option><option value="es">España</option><option value="ar">Argentina</option><option value="co">Colombia</option><option value="cl">Chile</option><option value="pe">Perú</option><option value="us">Estados Unidos</option></select></label>
+            <button onClick={research} disabled={!topic.trim() || researching}>{researching ? <LoaderCircle className="spin"/> : <Search/>}{researching ? 'Buscando…' : 'Buscar ideas'}</button>
+          </div>
+          {suggestions.length > 0 && <div className="suggestion-results">
+            <div className="results-meta"><span>{suggestions.length} IDEAS ENCONTRADAS</span><b className={researchMode === 'live' ? 'live' : ''}><Globe2/>{researchMode === 'live' ? `Sugerencias actuales de ${source === 'google' ? 'Google' : 'YouTube'}` : 'Modo educativo de respaldo'}</b></div>
+            <div className="suggestion-list">{suggestions.map((item, itemIndex) => <button key={`${item.keyword}-${itemIndex}`} onClick={() => chooseSuggestion(item.keyword)}><em>{String(itemIndex + 1).padStart(2, '0')}</em><span><b>{item.keyword}</b><small>{item.intent} · claridad {item.clarity}/100</small></span><ChevronRight/></button>)}</div>
+            <p className="data-note">El autocompletado muestra consultas sugeridas, no volumen mensual. La claridad es una rúbrica didáctica calculada por esta plataforma.</p>
+          </div>}
+        </section>
         <div className="practice-grid">
           <article className="keyword-workbench">
-            <div className="workbench-step"><b>01</b><div><span>ESCRIBE COMO BUSCARÍA UNA PERSONA</span><h2>¿Qué necesita resolver?</h2></div></div>
+            <div className="workbench-step"><b>02</b><div><span>SELECCIONA O ESCRIBE UNA FRASE</span><h2>¿Qué necesita resolver?</h2></div></div>
             <label htmlFor="keyword">PALABRA CLAVE O FRASE DE BÚSQUEDA</label>
             <div className="practice-input"><Search/><input id="keyword" value={keyword} onChange={(event) => { setKeyword(event.target.value); setSubmitted(false); }} onKeyDown={(event) => event.key === 'Enter' && run()} placeholder="Ej. cómo leer estados financieros…"/><button onClick={run} disabled={!keyword.trim()}>Analizar <Sparkles/></button></div>
             <div className="example-pills"><span>PRUEBA Y COMPARA</span>{examples.map((example) => <button key={example} onClick={() => { setKeyword(example); setSubmitted(false); }}>{example}</button>)}</div>
