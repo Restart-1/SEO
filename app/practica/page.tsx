@@ -30,15 +30,26 @@ function evaluateKeyword(value: string) {
 export default function PracticePage() {
   const [keyword, setKeyword] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [title, setTitle] = useState('');
+  const [screenText, setScreenText] = useState('');
+  const [opening, setOpening] = useState('');
   const result = useMemo(() => evaluateKeyword(keyword), [keyword]);
-  const run = () => keyword.trim() && setSubmitted(true);
+  const run = () => {
+    if (!keyword.trim()) return;
+    const base = result.score >= 70 ? keyword.trim() : 'cómo leer estados financieros paso a paso para principiantes';
+    setSubmitted(true);
+    if (!title) setTitle(`${base.charAt(0).toUpperCase() + base.slice(1)} | Ejemplo práctico`);
+    if (!screenText) setScreenText(base);
+    if (!opening) setOpening('En este video aprenderás a identificar qué dice un Estado de Resultados y cómo leerlo paso a paso.');
+  };
   const suggested = result.score >= 70 ? keyword.trim() : 'cómo leer estados financieros paso a paso para principiantes';
+  const packageScore = [title.trim().length >= 20, screenText.trim().length >= 12, opening.trim().length >= 45].filter(Boolean).length;
 
   return (
     <main className="restart-app">
       <CourseHeader active="practica" />
       <section className="practice-page">
-        <header className="practice-title"><span><FlaskConical/> PRÁCTICA EN CLASE · 12 MIN</span><h1>Probemos una palabra clave <em>en contexto.</em></h1><p>El grupo propone una frase para un reel o video sobre “estados financieros y cómo leerlos”. La herramienta muestra qué entiende una plataforma y dónde todavía falta claridad.</p></header>
+        <header className="practice-title"><span><FlaskConical/> PRÁCTICA FINAL · 18 MIN</span><h1>De keyword a <em>pieza publicable.</em></h1><p>El grupo construye un empaque coherente para un reel o video sobre “estados financieros y cómo leerlos”.</p></header>
         <div className="practice-grid">
           <article className="keyword-workbench">
             <div className="workbench-step"><b>01</b><div><span>ESCRIBE COMO BUSCARÍA UNA PERSONA</span><h2>¿Qué necesita resolver?</h2></div></div>
@@ -54,15 +65,19 @@ export default function PracticePage() {
         </div>
         {submitted && <section className="platform-preview">
           <header><span>02 / LLEVA LA KEYWORD A LA PIEZA</span><h2>La frase no vive solo en el título.</h2><p>Úsala de forma natural en varias señales y cumple la misma promesa en el contenido.</p></header>
-          <div className="preview-grid">
-            <div><Mic2/><small>LO QUE DICES</small><p>“Hoy vamos a ver <b>{suggested}</b>”.</p></div>
-            <div><Type/><small>TEXTO EN PANTALLA</small><p>{suggested}</p></div>
-            <div><Video/><small>TÍTULO · YOUTUBE</small><p>{suggested.charAt(0).toUpperCase() + suggested.slice(1)} | Ejemplo práctico</p></div>
-            <div><Images/><small>APERTURA · REEL</small><p>El error que te impide entender un Estado de Resultados.</p></div>
+          <div className="package-progress"><span>EMPAQUE COMPLETO</span><div>{[0,1,2].map((item) => <i key={item} className={item < packageScore ? 'done' : ''}/>)}</div><b>{packageScore}/3</b></div>
+          <div className="production-fields">
+            <label><Video/><span><small>TÍTULO DEL VIDEO</small><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Promesa clara y específica"/><em>{title.length} caracteres</em></span></label>
+            <label><Type/><span><small>TEXTO EN PANTALLA</small><input value={screenText} onChange={(event) => setScreenText(event.target.value)} placeholder={suggested}/><em>Debe entenderse sin escuchar el audio.</em></span></label>
+            <label><Mic2/><span><small>APERTURA HABLADA · 15 SEGUNDOS</small><textarea value={opening} onChange={(event) => setOpening(event.target.value)} placeholder="En este video aprenderás…"/><em>{opening.length}/45 caracteres mínimos</em></span></label>
+          </div>
+          <div className="preview-grid compact">
+            <div><Images/><small>APERTURA · REEL</small><p>{screenText || suggested}</p></div>
             <div><Hash/><small>ETIQUETAS ESPECÍFICAS</small><p>#EstadosFinancieros #EstadoDeResultados #FinanzasParaEmprendedores</p></div>
           </div>
+          {packageScore === 3 && <div className="package-ready"><Check/><p><b>La pieza ya tiene una cadena de coherencia.</b> Keyword, título, pantalla y apertura hablan de la misma necesidad.</p></div>}
         </section>}
-        <footer className="facilitator-bar"><div><span>DINÁMICA DOCENTE</span><p>Proyecta tres propuestas, cambia una sola variable y pregunta: “¿qué entiende ahora la plataforma que antes no entendía?”.</p></div><button onClick={() => { setKeyword(''); setSubmitted(false); }}><RotateCcw/> Nueva ronda</button></footer>
+        <footer className="facilitator-bar"><div><span>DINÁMICA DOCENTE</span><p>Revisa coherencia, no repetición exacta: ¿una persona sabría en cinco segundos que llegó al video correcto?</p></div><button onClick={() => { setKeyword(''); setSubmitted(false); setTitle(''); setScreenText(''); setOpening(''); }}><RotateCcw/> Nueva ronda</button></footer>
       </section>
     </main>
   );
