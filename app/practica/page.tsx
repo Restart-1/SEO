@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertCircle, Check, ChevronRight, Database, FlaskConical, Globe2, Hash, Images, Lightbulb, LoaderCircle, Mic2, RotateCcw, Search, Sparkles, Type, Video } from 'lucide-react';
+import { AlertCircle, Check, ChevronRight, Database, ExternalLink, FlaskConical, Globe2, Hash, Images, Lightbulb, LoaderCircle, Mic2, Plus, RotateCcw, Search, Smartphone, Sparkles, Type, Video } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { CourseHeader } from '@/app/components/course-header';
 
@@ -10,7 +10,7 @@ const examples = [
   'cómo interpretar un estado de resultados para principiantes',
 ];
 
-type Suggestion = { keyword: string; intent: string; clarity: number };
+type Suggestion = { keyword: string; intent: string; clarity: number; origin: 'live' | 'starter' | 'observed' | 'fallback' };
 
 function detectIntent(value: string) {
   const clean = normalize(value);
@@ -62,11 +62,12 @@ export default function PracticePage() {
   const [opening, setOpening] = useState('');
   const [topic, setTopic] = useState('');
   const [industry, setIndustry] = useState('');
-  const [source, setSource] = useState<'google' | 'youtube'>('google');
+  const [source, setSource] = useState<'google' | 'youtube' | 'tiktok'>('google');
   const [country, setCountry] = useState('mx');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [researching, setResearching] = useState(false);
-  const [researchMode, setResearchMode] = useState<'live' | 'fallback' | null>(null);
+  const [researchMode, setResearchMode] = useState<'live' | 'fallback' | 'guided' | null>(null);
+  const [observedSuggestion, setObservedSuggestion] = useState('');
   const result = useMemo(() => evaluateKeyword(keyword), [keyword]);
   const run = () => {
     if (!keyword.trim()) return;
@@ -81,15 +82,23 @@ export default function PracticePage() {
   const research = async () => {
     if (!topic.trim()) return;
     setResearching(true);
+    if (source === 'tiktok') {
+      const raw = fallbackIdeas(topic.trim(), industry.trim());
+      setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'starter' })));
+      setResearchMode('guided');
+      setResearching(false);
+      return;
+    }
     try {
       const params = new URLSearchParams({ q: `${topic.trim()} ${industry.trim()}`.trim(), source, country, language: 'es' });
       const response = await fetch(`/api/sugerencias?${params}`);
       const data = await response.json() as { suggestions?: string[]; live?: boolean };
       const raw = data.suggestions?.length ? data.suggestions : fallbackIdeas(topic.trim(), industry.trim());
-      setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item) })));
+      const origin = data.suggestions?.length && data.live ? 'live' : 'fallback';
+      setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin })));
       setResearchMode(data.suggestions?.length && data.live ? 'live' : 'fallback');
     } catch {
-      setSuggestions(fallbackIdeas(topic.trim(), industry.trim()).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item) })));
+      setSuggestions(fallbackIdeas(topic.trim(), industry.trim()).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'fallback' })));
       setResearchMode('fallback');
     } finally { setResearching(false); }
   };
@@ -97,6 +106,17 @@ export default function PracticePage() {
     setKeyword(value); setSubmitted(false); setTitle(''); setScreenText(''); setOpening('');
     document.getElementById('keyword')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
+  const addObservedSuggestion = () => {
+    const items = observedSuggestion.split(/[\n,]/).map((item) => item.trim()).filter((item) => item.length > 2);
+    if (!items.length) return;
+    setSuggestions((current) => {
+      const existing = new Set(current.map((item) => normalize(item.keyword)));
+      const additions = items.filter((item) => !existing.has(normalize(item))).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'observed' as const }));
+      return [...additions, ...current];
+    });
+    setObservedSuggestion('');
+  };
+  const tiktokSearchUrl = `https://www.tiktok.com/search?q=${encodeURIComponent(`${topic.trim()} ${industry.trim()}`.trim())}`;
 
   return (
     <main className="restart-app">
@@ -108,14 +128,19 @@ export default function PracticePage() {
           <div className="research-form">
             <label><span>TEMA O PROBLEMA</span><input value={topic} onChange={(event) => setTopic(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. estados financieros, yoga, repostería…"/></label>
             <label><span>GIRO O AUDIENCIA · OPCIONAL</span><input value={industry} onChange={(event) => setIndustry(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. emprendedores, restaurantes…"/></label>
-            <label><span>FUENTE</span><select value={source} onChange={(event) => setSource(event.target.value as 'google' | 'youtube')}><option value="google">Google</option><option value="youtube">YouTube</option></select></label>
+            <label><span>FUENTE</span><select value={source} onChange={(event) => { setSource(event.target.value as 'google' | 'youtube' | 'tiktok'); setSuggestions([]); setResearchMode(null); }}><option value="google">Google</option><option value="youtube">YouTube</option><option value="tiktok">TikTok · guiado</option></select></label>
             <label><span>PAÍS</span><select value={country} onChange={(event) => setCountry(event.target.value)}><option value="mx">México</option><option value="es">España</option><option value="ar">Argentina</option><option value="co">Colombia</option><option value="cl">Chile</option><option value="pe">Perú</option><option value="us">Estados Unidos</option></select></label>
             <button onClick={research} disabled={!topic.trim() || researching}>{researching ? <LoaderCircle className="spin"/> : <Search/>}{researching ? 'Buscando…' : 'Buscar ideas'}</button>
           </div>
+          {source === 'tiktok' && topic.trim() && <div className="tiktok-guide">
+            <div className="guide-intro"><Smartphone/><div><span>TIKTOK · BÚSQUEDA GUIADA</span><p>Abre la búsqueda real, observa el autocompletado y pega aquí las frases que TikTok te muestre.</p></div><a href={tiktokSearchUrl} target="_blank" rel="noreferrer">Abrir búsqueda <ExternalLink/></a></div>
+            <div className="capture-row"><label><span>SUGERENCIA OBSERVADA EN TIKTOK</span><input value={observedSuggestion} onChange={(event) => setObservedSuggestion(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && addObservedSuggestion()} placeholder="Pega una o varias frases, separadas por comas…"/></label><button onClick={addObservedSuggestion} disabled={!observedSuggestion.trim()}><Plus/> Añadir al análisis</button></div>
+            <a className="creative-center-link" href="https://ads.tiktok.com/business/creativecenter/" target="_blank" rel="noreferrer">Consultar también tendencias y Keyword Insights en Creative Center <ExternalLink/></a>
+          </div>}
           {suggestions.length > 0 && <div className="suggestion-results">
-            <div className="results-meta"><span>{suggestions.length} IDEAS ENCONTRADAS</span><b className={researchMode === 'live' ? 'live' : ''}><Globe2/>{researchMode === 'live' ? `Sugerencias actuales de ${source === 'google' ? 'Google' : 'YouTube'}` : 'Modo educativo de respaldo'}</b></div>
-            <div className="suggestion-list">{suggestions.map((item, itemIndex) => <button key={`${item.keyword}-${itemIndex}`} onClick={() => chooseSuggestion(item.keyword)}><em>{String(itemIndex + 1).padStart(2, '0')}</em><span><b>{item.keyword}</b><small>{item.intent} · claridad {item.clarity}/100</small></span><ChevronRight/></button>)}</div>
-            <p className="data-note">El autocompletado muestra consultas sugeridas, no volumen mensual. La claridad es una rúbrica didáctica calculada por esta plataforma.</p>
+            <div className="results-meta"><span>{suggestions.length} IDEAS ENCONTRADAS</span><b className={researchMode === 'live' ? 'live' : researchMode === 'guided' ? 'guided' : ''}><Globe2/>{researchMode === 'live' ? `Sugerencias actuales de ${source === 'google' ? 'Google' : 'YouTube'}` : researchMode === 'guided' ? 'Exploración guiada en TikTok' : 'Modo educativo de respaldo'}</b></div>
+            <div className="suggestion-list">{suggestions.map((item, itemIndex) => <button key={`${item.keyword}-${itemIndex}`} onClick={() => chooseSuggestion(item.keyword)}><em>{String(itemIndex + 1).padStart(2, '0')}</em><span><b>{item.keyword}</b><small>{item.intent} · claridad {item.clarity}/100 · <mark className={`origin-${item.origin}`}>{item.origin === 'live' ? 'fuente actual' : item.origin === 'observed' ? 'observada en TikTok' : item.origin === 'starter' ? 'idea inicial' : 'respaldo'}</mark></small></span><ChevronRight/></button>)}</div>
+            <p className="data-note">{researchMode === 'guided' ? 'Las ideas iniciales preparan la exploración; solo las frases que añades se marcan como observadas en TikTok.' : 'El autocompletado muestra consultas sugeridas, no volumen mensual.'} La claridad es una rúbrica didáctica calculada por esta plataforma.</p>
           </div>}
         </section>
         <div className="practice-grid">
