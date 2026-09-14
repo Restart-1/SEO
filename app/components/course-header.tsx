@@ -33,7 +33,7 @@ export function CourseHeader({ active }: { active?: string }) {
         <nav>
           {presentationPages.map((page) => (
             <a key={page.slug} className={`${active === page.slug ? 'active' : ''} ${page.view !== 'idea' && page.view !== 'activity' ? 'subpage' : ''}`} href={sitePath(`/conceptos/${page.slug}/`)} onClick={() => setOpen(false)}>
-              <em>{page.view === 'visual' ? '↳' : page.view === 'example' ? '↳' : page.concept.number}</em><div><small>{page.view === 'idea' ? 'IDEA' : page.view === 'visual' ? 'APOYO VISUAL' : page.view === 'example' ? 'EJEMPLO' : page.concept.eyebrow}</small><b>{page.view === 'idea' || page.view === 'activity' ? page.concept.title : page.view === 'visual' ? visualLabel(page.concept.visual) : page.concept.exampleLabel}</b></div>
+              <em>{page.view === 'idea' || page.view === 'activity' ? page.concept.number : '↳'}</em><div><small>{page.view === 'idea' ? 'IDEA' : page.view === 'visual' ? 'APOYO VISUAL' : page.view === 'example' ? 'ANTES / MEJOR' : page.view === 'activity-example' ? 'EJEMPLO RESUELTO' : page.concept.eyebrow}</small><b>{page.view === 'idea' || page.view === 'activity' ? page.concept.title : page.view === 'visual' ? visualLabel(page.concept.visual) : page.view === 'activity-example' ? page.concept.activity?.exampleTitle : page.concept.exampleLabel}</b></div>
             </a>
           ))}
         </nav>

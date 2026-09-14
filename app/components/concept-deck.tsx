@@ -54,6 +54,11 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
               <footer><MessageCircleQuestion/><p>{concept.teacherPrompt}</p></footer>
             </div>
           </div> : null}
+          {view === 'activity-example' && concept.activity ? <div className="activity-example-stage">
+            <header><span>{concept.number} / EJEMPLO RESUELTO</span><h1>{concept.activity.exampleTitle}</h1><p>{concept.activity.facilitatorScript}</p></header>
+            <div className="activity-example-list">{concept.activity.exampleItems.map((item, itemIndex) => <div key={item}><em>{String(itemIndex + 1).padStart(2, '0')}</em><p>{item}</p></div>)}</div>
+            <footer><MessageCircleQuestion/><div><small>CIERRE DE LA ACTIVIDAD</small><p>{concept.activity.debrief}</p></div></footer>
+          </div> : null}
           {view === 'idea' ? <div className="idea-stage">
             <div className="idea-number">{concept.number}</div>
             <div className="idea-copy">
@@ -90,6 +95,7 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
           <div className="note-warning"><TriangleAlert/><section><span>ACLARACIÓN</span><p>{concept.misconception}</p></section></div>
           <div className="note-prompt"><MessageCircleQuestion/><section><span>PREGUNTA AL GRUPO</span><p>{concept.teacherPrompt}</p></section></div>
           <div className="note-expected"><Check/><section><span>RESPUESTA ESPERADA</span><p>{concept.expected}</p></section></div>
+          {concept.activity && <div className="activity-notes-extra"><span>GUIÓN PARA DECIRLO</span><p>{concept.activity.facilitatorScript}</p><span>EJEMPLO SUGERIDO</span>{concept.activity.exampleItems.map((item) => <p key={item}>• {item}</p>)}</div>}
         </aside>}
       </section>
     </main>

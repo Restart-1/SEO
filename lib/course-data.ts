@@ -11,7 +11,15 @@ export type Concept = {
   goodExample?: string;
   comparisonImage?: string;
   comparisonAlt?: string;
-  activity?: { instruction: string; steps: [string, string, string]; output: string };
+  activity?: {
+    instruction: string;
+    steps: [string, string, string];
+    output: string;
+    facilitatorScript: string;
+    exampleTitle: string;
+    exampleItems: string[];
+    debrief: string;
+  };
   explanation: string;
   example: string;
   exampleLabel: string;
@@ -59,7 +67,21 @@ export const concepts: Concept[] = [
     exampleLabel: 'CASOS PARA PROYECTAR', example: 'Título descriptivo · 30 hashtags genéricos · sitio móvil · keyword repetida 18 veces · respuesta firmada por una persona experta.',
     teacherPrompt: 'Después de cada voto pregunta: ¿qué entiende mejor la persona o el buscador gracias a esta acción?',
     misconception: 'Una práctica antigua puede seguir siendo útil cuando tiene un propósito claro.', visual: 'legacy', duration: '10 min', expected: 'Distinguen fundamentos técnicos de tácticas mecánicas.',
-    activity: { instruction: 'Muestra cinco prácticas. El grupo vota y justifica cada clasificación.', steps: ['Vota: base, truco o depende', 'Explica qué señal produce', 'Reformula la práctica si hace falta'], output: 'Una regla del grupo: “Esta técnica sirve cuando…”' },
+    activity: {
+      instruction: 'Muestra cinco decisiones aplicadas a un video sobre estados financieros. El grupo vota y justifica cada clasificación.',
+      steps: ['Vota: base, truco o depende', 'Explica qué problema resuelve', 'Reformula la práctica si hace falta'],
+      output: 'Una regla del grupo: “Esta técnica sirve cuando…”',
+      facilitatorScript: 'Di: “Voy a mostrar cinco decisiones para posicionar un video sobre estados financieros. Voten BASE si ayuda a entender, acceder o verificar; TRUCO si solo intenta manipular; DEPENDE si su valor cambia con el contexto. No importa adivinar: importa justificar qué mejora para la persona o el buscador”.',
+      exampleTitle: 'Cinco casos sobre estados financieros',
+      exampleItems: [
+        'BASE · Título: “Cómo leer un Estado de Resultados paso a paso”. Describe con precisión la respuesta.',
+        'TRUCO · Repetir “estados financieros” 18 veces en la descripción. Añade ruido, no claridad.',
+        'BASE · Incluir subtítulos correctos y nombrar ingresos, costos y utilidad. Hace el contenido comprensible.',
+        'DEPENDE · Conseguir un enlace desde un blog contable. Sirve si es una recomendación editorial real.',
+        'TRUCO · Usar #fyp, #viral y 25 etiquetas genéricas. No explica la pregunta ni la audiencia.',
+      ],
+      debrief: 'Cierra diciendo: “Una base resuelve un problema real. Un truco persigue la señal sin mejorar la respuesta. Si dijimos depende, debemos nombrar la condición”.',
+    },
   },
   {
     slug: 'intencion-de-busqueda', number: '03', eyebrow: 'LA PREGUNTA DETRÁS DE LA FRASE',
@@ -99,7 +121,19 @@ export const concepts: Concept[] = [
     exampleLabel: 'PUNTO DE PARTIDA', example: 'estados financieros → cómo leer estados financieros → cómo leer estados financieros paso a paso para emprendedores',
     teacherPrompt: 'Pregunta qué palabra cambió más la expectativa de la audiencia y por qué.',
     misconception: 'Hacer una frase más larga no siempre la hace más clara.', visual: 'content', duration: '12 min', expected: 'Producen una consulta natural, específica y alineada con una intención.',
-    activity: { instruction: 'Cada equipo transforma el mismo tema en una búsqueda diferente.', steps: ['Elige una intención', 'Añade acción y contexto', 'Lee la frase como si fuera una persona real'], output: 'Una keyword defendida en una sola oración.' },
+    activity: {
+      instruction: 'Cada equipo transforma “estados financieros” en una búsqueda diferente.',
+      steps: ['Elige: aprender, hacer u obtener', 'Añade acción y contexto', 'Defiende la frase en una oración'],
+      output: 'Una keyword sobre estados financieros alineada con una intención.',
+      facilitatorScript: 'Di: “Todos partimos del mismo tema: estados financieros. El equipo 1 ayudará a aprender, el 2 a hacer y el 3 a obtener una herramienta. Su frase debe permitirnos imaginar el contenido antes de verlo”.',
+      exampleTitle: 'Un tema, tres búsquedas distintas',
+      exampleItems: [
+        'APRENDER · “Qué son los estados financieros y para qué sirven”. Formato: explicación breve.',
+        'HACER · “Cómo leer un Estado de Resultados paso a paso”. Formato: tutorial con ejemplo.',
+        'OBTENER · “Plantilla de Estado de Resultados en Excel para emprendedores”. Formato: recurso descargable.',
+      ],
+      debrief: 'Pregunta cuál frase hace más evidente el resultado y qué palabra cambió la promesa. Aclara que más larga no siempre significa más clara.',
+    },
   },
   {
     slug: 'como-lee-un-video', number: '05', eyebrow: 'SEÑALES DEL CONTENIDO',
@@ -139,7 +173,19 @@ export const concepts: Concept[] = [
     exampleLabel: 'CONSULTA PARA LA DEMO', example: '“cómo leer un estado de resultados…”',
     teacherPrompt: 'Pregunta: ¿qué señales se repiten en los resultados y cuál parece influir más en que entendamos el tema?',
     misconception: 'Los primeros resultados son pistas del sistema, no una fórmula garantizada.', visual: 'tiktok', duration: '15 min', expected: 'Detectan al menos tres señales que conectan consulta y video.',
-    activity: { instruction: 'Realiza una búsqueda en vivo y auditen tres videos sin juzgar su popularidad.', steps: ['Lee las sugerencias', 'Observa los primeros 5 segundos', 'Registra señales que se repiten'], output: 'Una lista de tres patrones aplicables al video del grupo.' },
+    activity: {
+      instruction: 'Busca “cómo leer un Estado de Resultados” y auditen tres videos sin juzgar su popularidad.',
+      steps: ['Lee el autocompletado', 'Observa los primeros 5 segundos', 'Registra señales repetidas'],
+      output: 'Tres patrones aplicables a un video de estados financieros.',
+      facilitatorScript: 'Di: “No vamos a copiar al primer resultado ni a decidir cuál es más bonito. Buscaremos patrones: cómo nombra la pregunta, qué muestra y cuánto tarda en empezar a responder”.',
+      exampleTitle: 'Qué observar en tres resultados',
+      exampleItems: [
+        'VIDEO 1 · Dice la consulta y muestra un Estado de Resultados en el primer segundo.',
+        'VIDEO 2 · Abre con “ventas no es lo mismo que utilidad” y señala cifras reales.',
+        'VIDEO 3 · Promete tres pasos, usa texto grande y cierra invitando a guardar la guía.',
+      ],
+      debrief: 'Conviertan los patrones en decisiones: nombrar la pregunta, mostrar el documento y empezar con ingresos, costos y utilidad. Recuérdales que observar resultados no garantiza posición.',
+    },
   },
   {
     slug: 'autoridad-y-presencia', number: '07', eyebrow: 'SEO EN 2026',
@@ -179,7 +225,20 @@ export const concepts: Concept[] = [
     exampleLabel: 'CADENA DE COHERENCIA', example: 'Keyword → título → texto en pantalla → apertura hablada',
     teacherPrompt: 'Antes de cerrar, pregunta: ¿una persona sabría en cinco segundos que llegó al video correcto?',
     misconception: 'Repetir exactamente la misma frase en cuatro lugares puede sonar artificial.', visual: 'aeo', duration: '18 min', expected: 'Cada equipo sale con un empaque SEO completo y coherente.',
-    activity: { instruction: 'Usen el laboratorio y completen los cuatro elementos del video.', steps: ['Evalúa la keyword', 'Redacta título y texto', 'Ensaya la primera frase'], output: 'Keyword + título + texto en pantalla + apertura de 15 segundos.' },
+    activity: {
+      instruction: 'Usen el laboratorio para convertir una búsqueda de estados financieros en una pieza lista para grabar.',
+      steps: ['Evalúa la keyword', 'Redacta título y texto', 'Ensaya la apertura de 15 segundos'],
+      output: 'Keyword + título + texto en pantalla + apertura de 15 segundos.',
+      facilitatorScript: 'Di: “No buscamos repetir la misma frase cuatro veces. Buscamos que keyword, título, pantalla y apertura confirmen la misma promesa con lenguaje natural”.',
+      exampleTitle: 'Cadena completa para el video',
+      exampleItems: [
+        'KEYWORD · “Cómo leer un Estado de Resultados paso a paso para emprendedores”.',
+        'TÍTULO · “Cómo leer un Estado de Resultados sin ser contador”.',
+        'PANTALLA · “Lee tu Estado de Resultados en 3 pasos”.',
+        'APERTURA · “Si tienes ventas pero no sabes si ganas dinero, revisemos ingresos, costos y utilidad con un ejemplo”.',
+      ],
+      debrief: 'Lee solo los cuatro elementos. El grupo responde claro, ambiguo o distinto. Si no dicen claro, cambien una sola pieza y vuelvan a probar.',
+    },
   },
 ];
 
@@ -187,7 +246,7 @@ export function getConcept(slug: string) {
   return concepts.find((concept) => concept.slug === slug);
 }
 
-export type PresentationView = 'idea' | 'visual' | 'example' | 'activity';
+export type PresentationView = 'idea' | 'visual' | 'example' | 'activity' | 'activity-example';
 
 export type PresentationPage = {
   slug: string;
@@ -196,7 +255,10 @@ export type PresentationPage = {
 };
 
 export const presentationPages: PresentationPage[] = concepts.flatMap((concept) => {
-  if (concept.activity) return [{ slug: concept.slug, view: 'activity' as const, concept }];
+  if (concept.activity) return [
+    { slug: concept.slug, view: 'activity' as const, concept },
+    { slug: `${concept.slug}-ejemplo`, view: 'activity-example' as const, concept },
+  ];
 
   return [
     { slug: concept.slug, view: 'idea' as const, concept },

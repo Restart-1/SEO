@@ -113,29 +113,45 @@ activities = [
     {
         "n": "A1", "name": "Base técnica o truco obsoleto", "time": "10 min",
         "goal": "Distinguir fundamentos, tácticas mecánicas e ideas que dependen del contexto.",
-        "steps": "1. Proyecta una práctica. 2. El grupo vota base, truco o depende. 3. Pide una justificación centrada en la experiencia de búsqueda. 4. Reformulen la práctica.",
-        "example": "Título descriptivo = base. Sitio móvil y rápido = base. Treinta hashtags genéricos = táctica riesgosa. Keyword repetida 18 veces = truco obsoleto. Respuesta firmada por una persona experta = señal vigente de autoridad.",
-        "deliverable": "Regla del grupo: esta técnica sirve cuando ayuda a comprender, acceder o verificar la respuesta."
+        "opening": "Di literalmente: Vamos a revisar cinco decisiones para posicionar un video sobre estados financieros. Levanten B si creen que es una base, T si es un truco y D si depende. Base significa que ayuda a entender, acceder o verificar. Truco significa que persigue una señal sin mejorar la respuesta. En depende tendremos que nombrar la condición.",
+        "timeline": "Min 0-1: explica B, T y D. Min 1-6: muestra un caso por minuto y pide el voto. Min 6-8: escucha dos justificaciones opuestas. Min 8-9: reformulen una práctica mala. Min 9-10: construyan la regla final.",
+        "steps": "Después de cada voto pregunta: ¿qué problema real resuelve esto para quien busca cómo leer estados financieros? Si nadie responde, cambia la pregunta por: ¿ayuda a entender el tema, consumir el contenido o confiar en la fuente?",
+        "example": "CASO 1 - Título Cómo leer un Estado de Resultados paso a paso: BASE, porque declara pregunta y formato. CASO 2 - Repetir estados financieros 18 veces: TRUCO, porque aumenta repetición sin significado. CASO 3 - Subtítulos que nombran ingresos, costos y utilidad: BASE, porque hacen el contenido accesible y comprensible. CASO 4 - Enlace desde un blog contable serio: DEPENDE; sirve si es una recomendación editorial real, no si fue comprado en masa. CASO 5 - #fyp, #viral y 25 etiquetas genéricas: TRUCO o idea incompleta, porque no describe la necesidad.",
+        "questions": "Pregunta de profundización: ¿la práctica seguiría teniendo valor si el buscador no la midiera? Si la respuesta es sí porque ayuda a la persona, probablemente es base. Si solo existe para provocar al algoritmo, probablemente es truco.",
+        "rescue": "Si el grupo se bloquea, resuelve el primer caso tú: Este título es base porque permite que una persona y un buscador anticipen exactamente qué aprenderán. Ahora apliquen el mismo criterio al segundo caso.",
+        "deliverable": "Regla del grupo: esta técnica sirve cuando ayuda a comprender, acceder o verificar la respuesta. Cierre sugerido: no preguntamos si una técnica es vieja; preguntamos qué problema resuelve hoy."
     },
     {
         "n": "A2", "name": "De tema amplio a búsqueda útil", "time": "12 min",
         "goal": "Convertir un tema en consultas alineadas con distintas intenciones.",
-        "steps": "1. Divide en tres equipos: aprender, hacer y obtener. 2. Todos parten de estados financieros. 3. Añaden acción y contexto. 4. Leen la frase como si fueran la audiencia. 5. El grupo elige la promesa más clara.",
+        "opening": "Di literalmente: Estados financieros todavía es un tema, no una intención. Cada equipo va a convertirlo en una búsqueda que nos permita imaginar el contenido antes de verlo. No gana la frase más larga; gana la que hace más claro el resultado.",
+        "timeline": "Min 0-2: asigna aprender, hacer y obtener. Min 2-6: cada equipo añade acción y contexto. Min 6-9: leen sus frases. Min 9-11: el grupo identifica formato y resultado. Min 11-12: eligen una frase y explican por qué.",
+        "steps": "1. Todos parten de estados financieros. 2. Eligen qué podrá hacer la persona al terminar. 3. Añaden una acción y un contexto. 4. Leen la frase en voz alta. 5. Otra persona debe adivinar qué video o recurso recibiría.",
         "example": "Aprender: qué son los estados financieros para emprendedores. Hacer: cómo leer un Estado de Resultados paso a paso. Obtener: plantilla de Estado de Resultados en Excel para negocio pequeño.",
+        "questions": "Pregunta: ¿qué palabra cambió más la promesa? Respuesta modelo: cómo anuncia un proceso; plantilla anuncia un recurso; para emprendedores delimita el contexto.",
+        "rescue": "Si proponen finanzas empresas información, pregunta: ¿qué quiere hacer la persona con esa información? Usa su verbo para iniciar la nueva frase.",
         "deliverable": "Una keyword natural y una oración que explique por qué coincide con la intención."
     },
     {
         "n": "A3", "name": "Auditoría del buscador de TikTok", "time": "15 min",
         "goal": "Reconocer patrones reales sin convertirlos en una fórmula rígida.",
-        "steps": "1. Escribe cómo leer un estado de resultados sin terminar la frase. 2. Lee el autocompletado. 3. Abre tres resultados. 4. Observa solo los primeros cinco segundos. 5. Registra audio, texto, caption, formato y promesa.",
+        "opening": "Di literalmente: Vamos a observar el buscador como investigadores, no como copiadores. Buscaremos cómo TikTok conecta la pregunta cómo leer un Estado de Resultados con señales visibles y auditivas.",
+        "timeline": "Min 0-2: escribe la consulta y lee autocompletado. Min 2-8: abre tres resultados, máximo dos minutos por video. Min 8-11: comparen los primeros cinco segundos. Min 11-13: registren patrones. Min 13-15: elijan tres decisiones para su pieza.",
+        "steps": "Para cada resultado pregunta: ¿dice la consulta?, ¿la muestra en pantalla?, ¿enseña un documento o cifras?, ¿cuándo empieza a responder?, ¿qué promete el caption? Registra hechos observables, no opiniones como me gustó.",
         "example": "Patrón sugerido: pregunta visible en el primer segundo, ejemplo numérico en pantalla, explicación en tres pasos y CTA para guardar. Aclara que es una observación, no una garantía del algoritmo.",
+        "questions": "Pregunta: ¿qué señal aparece en los tres videos y cuál cambia? Respuesta modelo: los tres nombran el Estado de Resultados; cambian el gancho, la profundidad y el tipo de ejemplo.",
+        "rescue": "Si TikTok no carga o no hay resultados útiles, usa estos tres casos: mostrar el documento, contrastar ventas con utilidad y explicar ingresos-costos-utilidad en tres pasos.",
         "deliverable": "Tres patrones aplicables y una decisión que el equipo no copiará porque no encaja con su audiencia."
     },
     {
         "n": "A4", "name": "De keyword a pieza publicable", "time": "18 min",
         "goal": "Crear una cadena coherente entre búsqueda, título, pantalla y apertura hablada.",
-        "steps": "1. Evalúa la keyword. 2. Redacta título y texto en pantalla. 3. Ensaya una apertura de 15 segundos. 4. Comprueba que una persona reconozca en cinco segundos que llegó al video correcto.",
+        "opening": "Di literalmente: Ahora convertiremos una búsqueda en cuatro decisiones editoriales. No repitan la misma frase como robot. Cada elemento puede sonar distinto, pero todos deben confirmar la misma promesa.",
+        "timeline": "Min 0-3: elijan y evalúen la keyword. Min 3-7: redacten título. Min 7-10: escriban texto en pantalla. Min 10-14: preparen apertura de 15 segundos. Min 14-17: prueba claro, ambiguo o distinto. Min 17-18: ajuste final.",
+        "steps": "1. Keyword: acción, tema y contexto. 2. Título: promesa clara. 3. Pantalla: versión legible en un segundo. 4. Apertura: problema y ruta de solución. 5. Lean los cuatro elementos sin explicar nada más.",
         "example": "Keyword: cómo leer un Estado de Resultados paso a paso para emprendedores. Título: Cómo leer un Estado de Resultados sin ser contador. Pantalla: Lee tu Estado de Resultados en 3 pasos. Apertura: Si tienes ventas pero no sabes si realmente ganas dinero, en el próximo minuto veremos ingresos, costos y utilidad con un ejemplo sencillo.",
+        "questions": "Pregunta: ¿los cuatro elementos llevan a la misma respuesta? Respuesta modelo: sí; todos prometen interpretar el Estado de Resultados mediante un proceso accesible para no especialistas.",
+        "rescue": "Si la apertura se alarga, usa esta fórmula: problema reconocible + resultado + ruta. Ejemplo: Si vendes pero no sabes si ganas, revisemos ingresos, costos y utilidad en tres pasos.",
         "deliverable": "Keyword + título + texto en pantalla + apertura de 15 segundos."
     },
 ]
@@ -158,7 +174,7 @@ story = []
 
 cover = Table([[Paragraph("RE:START", title), Paragraph("NOTAS DEL ORADOR", green)], [Paragraph("SEO + AEO para creadores", white), Paragraph("Sesión guiada de 150 minutos", white)]], colWidths=[108*mm, 62*mm], rowHeights=[42*mm, 22*mm])
 cover.setStyle(TableStyle([("BACKGROUND",(0,0),(-1,-1),BLACK),("BOX",(0,0),(-1,-1),1,RED),("VALIGN",(0,0),(-1,-1),"MIDDLE"),("LEFTPADDING",(0,0),(-1,-1),10*mm),("RIGHTPADDING",(0,0),(-1,-1),8*mm),("LINEBEFORE",(1,0),(1,-1),1,RED)]))
-story += [Spacer(1,35*mm), cover, Spacer(1,18*mm), Paragraph("Guía completa para presentar cada idea, apoyo visual y comparación Antes / Mejor. Incluye preguntas, respuestas esperadas, transiciones y cuatro actividades resueltas.", body), Spacer(1,8*mm)]
+story += [Spacer(1,35*mm), cover, Spacer(1,18*mm), Paragraph("Guía detallada para presentar 32 diapositivas usando estados financieros como ejemplo conductor. Incluye frases para decir, preguntas, respuestas esperadas, transiciones y cuatro actividades resueltas minuto a minuto.", body), Spacer(1,8*mm)]
 route_data = [[Paragraph("TRAMO", h2), Paragraph("MINUTOS", h2), Paragraph("CONTENIDO", h2)], ["Abrir", "0-10", "Diagnóstico y objetivo"], ["Entender", "10-40", "SEO, técnicas anteriores y A1"], ["Enfocar", "40-72", "Intención, keywords y A2"], ["Pausa", "72-82", "Receso"], ["Descubrir", "82-117", "Señales, TikTok y A3"], ["Convertir", "117-150", "Autoridad, AEO y A4"]]
 route = Table(route_data, colWidths=[38*mm,28*mm,104*mm])
 route.setStyle(TableStyle([("BACKGROUND",(0,0),(-1,0),DARK),("TEXTCOLOR",(0,0),(-1,0),colors.white),("GRID",(0,0),(-1,-1),.4,colors.HexColor("#CCCCCC")),("FONTNAME",(0,1),(-1,-1),"Helvetica"),("FONTSIZE",(0,1),(-1,-1),8),("ROWBACKGROUNDS",(0,1),(-1,-1),[colors.white,LIGHT]),("VALIGN",(0,0),(-1,-1),"MIDDLE"),("TOPPADDING",(0,0),(-1,-1),5),("BOTTOMPADDING",(0,0),(-1,-1),5)]))
@@ -182,7 +198,17 @@ activity_cover = Table([[Paragraph("ACTIVIDADES PRÁCTICAS", title)], [Paragraph
 activity_cover.setStyle(TableStyle([("BACKGROUND",(0,0),(-1,-1),BLACK),("BOX",(0,0),(-1,-1),1,GREEN),("VALIGN",(0,0),(-1,-1),"MIDDLE"),("LEFTPADDING",(0,0),(-1,-1),10*mm),("RIGHTPADDING",(0,0),(-1,-1),10*mm)]))
 story += [Spacer(1,55*mm), activity_cover, Spacer(1,8*mm), Paragraph("Úsalas por chat, micrófono o salas pequeñas. Cada actividad incluye una solución modelo para destrabar al grupo sin convertirla en la única respuesta correcta.", body), PageBreak()]
 for activity in activities:
-    story += [Paragraph(f"{activity['n']}  |  {activity['name']}", h1), Paragraph(f"TIEMPO: {activity['time']}", h2), Paragraph(activity["goal"], body), Paragraph("CÓMO FACILITARLA", h2), Paragraph(activity["steps"], body), Paragraph("EJEMPLO SUGERIDO / SOLUCIÓN MODELO", h2), Paragraph(activity["example"], body), Paragraph("ENTREGABLE", h2), Paragraph(activity["deliverable"], body), Spacer(1,8*mm)]
+    story += [
+        Paragraph(f"{activity['n']}  |  {activity['name']}", h1),
+        Paragraph(f"TIEMPO: {activity['time']}", h2), Paragraph(activity["goal"], body),
+        Paragraph("QUÉ DECIR PARA ABRIR", h2), Paragraph(activity["opening"], body),
+        Paragraph("MINUTO A MINUTO", h2), Paragraph(activity["timeline"], body),
+        Paragraph("CÓMO FACILITARLA", h2), Paragraph(activity["steps"], body),
+        Paragraph("EJEMPLO SUGERIDO / SOLUCIÓN MODELO", h2), Paragraph(activity["example"], body),
+        Paragraph("PREGUNTAS Y RESPUESTA MODELO", h2), Paragraph(activity["questions"], body),
+        Paragraph("SI EL GRUPO SE BLOQUEA", h2), Paragraph(activity["rescue"], body),
+        Paragraph("ENTREGABLE Y CIERRE", h2), Paragraph(activity["deliverable"], body), Spacer(1,6*mm)
+    ]
     box = Table([[Paragraph("Pregunta de cierre", green), Paragraph("¿La persona sabría en cinco segundos que llegó al contenido correcto?", white)]], colWidths=[44*mm,126*mm])
     box.setStyle(TableStyle([("BACKGROUND",(0,0),(-1,-1),DARK),("BOX",(0,0),(-1,-1),1,GREEN),("VALIGN",(0,0),(-1,-1),"MIDDLE"),("LEFTPADDING",(0,0),(-1,-1),7),("RIGHTPADDING",(0,0),(-1,-1),7),("TOPPADDING",(0,0),(-1,-1),9),("BOTTOMPADDING",(0,0),(-1,-1),9)]))
     story += [box, PageBreak()]
