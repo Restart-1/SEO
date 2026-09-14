@@ -17,7 +17,7 @@ export function CourseHeader({ active }: { active?: string }) {
     <>
       <div className="brand-stripe"><i /><i /></div>
       <header className="course-header">
-        <a className="restart-logo" href="/" aria-label="Inicio RE:START"><span>RE:</span>START</a>
+        <a className="restart-logo" href="/" aria-label="Inicio RESTART"><i>REST</i><strong>A</strong><i>RT</i></a>
         <div className="course-label"><small>CLASE GUIADA</small><b>SEO + AEO PARA CREADORES</b></div>
         <div className="header-tools">
           <a className="agenda-link" href="/agenda"><CalendarClock /> Agenda</a>

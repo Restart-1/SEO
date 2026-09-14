@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpenText, FlaskConical, Play, Search, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpenText, FlaskConical, Play } from 'lucide-react';
 import { CourseHeader } from './components/course-header';
 import { concepts } from '@/lib/course-data';
 
@@ -6,20 +6,11 @@ export default function Home() {
   return (
     <main className="restart-app">
       <CourseHeader />
-      <section className="cover-page">
-        <div className="cover-copy">
-          <span>SESIÓN GUIADA · SEO + AEO</span>
-          <h1>Haz que el algoritmo <em>entienda</em> tu contenido.</h1>
-          <p>Una clase de 150 minutos con ocho conceptos y cuatro actividades para diseñar contenido que una persona pueda encontrar, comprender y recordar.</p>
-          <div className="cover-actions">
-            <a href={`/conceptos/${concepts[0].slug}`}><Play/> Comenzar la clase</a>
-            <a className="secondary" href="/practica"><FlaskConical/> Abrir práctica</a>
-          </div>
-        </div>
-        <div className="cover-map">
-          <div className="cover-stat"><strong>8+4</strong><span>CONCEPTOS + ACTIVIDADES<br/>UNA IDEA POR PÁGINA</span></div>
-          <div className="search-demo"><Search/><div><small>LA PREGUNTA DE LA CLASE</small><b>¿Cómo lograr que mi contenido aparezca?</b></div><Sparkles/></div>
-          <div className="cover-principle"><i/><p><b>EL RETO:</b> hablar con claridad para dos audiencias al mismo tiempo: las personas y las máquinas.</p></div>
+      <section className="restart-cover">
+        <img src="/restart-cover.png" alt="RESTART — Empieza diferente" />
+        <div className="restart-cover-actions">
+          <a href={`/conceptos/${concepts[0].slug}`}><Play/> Comenzar la clase</a>
+          <a className="secondary" href="/practica"><FlaskConical/> Abrir práctica</a>
         </div>
       </section>
       <section className="route-overview">
