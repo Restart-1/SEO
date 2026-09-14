@@ -6,6 +6,8 @@ export function generateStaticParams() {
   return presentationPages.map(({ slug }) => ({ slug }));
 }
 
+export const dynamicParams = false;
+
 export default async function ConceptPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const page = getPresentationPage(slug);

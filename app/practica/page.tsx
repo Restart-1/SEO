@@ -3,6 +3,7 @@
 import { AlertCircle, Check, ChevronRight, Database, ExternalLink, FlaskConical, Globe2, Hash, Images, Lightbulb, LoaderCircle, Mic2, Plus, RotateCcw, Search, Smartphone, Sparkles, Type, Video } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { CourseHeader } from '@/app/components/course-header';
+import { sitePath } from '@/lib/site-path';
 
 const examples = [
   'estados financieros',
@@ -39,6 +40,35 @@ function fallbackIdeas(topic: string, industry: string) {
 
 function normalize(value: string) {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+
+function jsonpSuggestions(seed: string, source: 'google' | 'youtube', country: string) {
+  return new Promise<string[]>((resolve, reject) => {
+    const callback = `restartSuggest${Date.now()}${Math.random().toString(36).slice(2)}`;
+    const script = document.createElement('script');
+    const timer = window.setTimeout(() => finish(new Error('Tiempo de espera agotado')), 7000);
+    const callbackWindow = window as unknown as Record<string, unknown>;
+    const finish = (error?: Error, values: string[] = []) => {
+      window.clearTimeout(timer);
+      script.remove();
+      delete callbackWindow[callback];
+      if (error) reject(error); else resolve(values);
+    };
+    callbackWindow[callback] = (payload: unknown) => {
+      const list = Array.isArray(payload) && Array.isArray(payload[1]) ? payload[1].map(String) : [];
+      finish(undefined, list);
+    };
+    const endpoint = new URL('https://suggestqueries.google.com/complete/search');
+    endpoint.searchParams.set('client', 'firefox');
+    endpoint.searchParams.set('q', seed);
+    endpoint.searchParams.set('hl', 'es');
+    endpoint.searchParams.set('gl', country);
+    endpoint.searchParams.set('callback', callback);
+    if (source === 'youtube') endpoint.searchParams.set('ds', 'yt');
+    script.onerror = () => finish(new Error('No se pudo consultar el servicio'));
+    script.src = endpoint.toString();
+    document.head.appendChild(script);
+  });
 }
 
 function evaluateKeyword(value: string) {
@@ -90,9 +120,16 @@ export default function PracticePage() {
       return;
     }
     try {
-      const params = new URLSearchParams({ q: `${topic.trim()} ${industry.trim()}`.trim(), source, country, language: 'es' });
-      const response = await fetch(`/api/sugerencias?${params}`);
-      const data = await response.json() as { suggestions?: string[]; live?: boolean };
+      const query = `${topic.trim()} ${industry.trim()}`.trim();
+      let data: { suggestions?: string[]; live?: boolean };
+      if (process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true') {
+        const groups = await Promise.all([query, `cómo ${query}`, `${query} para`].map((seed) => jsonpSuggestions(seed, source, country)));
+        data = { suggestions: [...new Set(groups.flat().map((item) => item.trim()).filter(Boolean))].slice(0, 18), live: true };
+      } else {
+        const params = new URLSearchParams({ q: query, source, country, language: 'es' });
+        const response = await fetch(`${sitePath('/api/sugerencias')}?${params}`);
+        data = await response.json() as { suggestions?: string[]; live?: boolean };
+      }
       const raw = data.suggestions?.length ? data.suggestions : fallbackIdeas(topic.trim(), industry.trim());
       const origin = data.suggestions?.length && data.live ? 'live' : 'fallback';
       setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin })));

@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, MessageCircleQuesti
 import { useEffect, useState } from 'react';
 import type { Concept, PresentationView } from '@/lib/course-data';
 import { presentationPages } from '@/lib/course-data';
+import { sitePath } from '@/lib/site-path';
 import { CourseHeader } from './course-header';
 import { ConceptVisual } from './concept-visual';
 
@@ -26,8 +27,8 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft' && previous) window.location.href = `/conceptos/${previous.slug}`;
-      if (event.key === 'ArrowRight') window.location.href = next ? `/conceptos/${next.slug}` : '/practica';
+      if (event.key === 'ArrowLeft' && previous) window.location.href = sitePath(`/conceptos/${previous.slug}/`);
+      if (event.key === 'ArrowRight') window.location.href = next ? sitePath(`/conceptos/${next.slug}/`) : sitePath('/practica/');
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -71,7 +72,7 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
           </div> : null}
           {view === 'example' ? <div className="example-stage">
             <header><span>{concept.number} / EJEMPLO</span><h1>{concept.exampleLabel}</h1></header>
-            {concept.slug === 'seo' ? <div className="provided-comparison" role="img" aria-label="Comparación entre publicar y esperar, y definir una pregunta con señales coherentes" /> : concept.badExample && concept.goodExample ? <div className="example-compare">
+            {concept.slug === 'seo' ? <div className="provided-comparison" style={{ backgroundImage: `url(${sitePath('/restart-seo-comparison.png')})` }} role="img" aria-label="Comparación entre publicar y esperar, y definir una pregunta con señales coherentes" /> : concept.badExample && concept.goodExample ? <div className="example-compare">
               <section><span><X/> ANTES</span><p>{concept.badExample}</p></section>
               <section><span><Check/> MEJOR</span><p>{concept.goodExample}</p></section>
             </div> : null}
@@ -80,9 +81,9 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
           <footer className="slide-footer"><span>RE:START · SEO + AEO PARA CREADORES</span><b>{concept.number}</b></footer>
         </article>
         <nav className="page-controls">
-          {previous ? <a href={`/conceptos/${previous.slug}`}><ArrowLeft/> Anterior</a> : <a href="/"><ArrowLeft/> Portada</a>}
+          {previous ? <a href={sitePath(`/conceptos/${previous.slug}/`)}><ArrowLeft/> Anterior</a> : <a href={sitePath('/')}><ArrowLeft/> Portada</a>}
           <button className="notes-button" onClick={() => setShowNotes(!showNotes)}>{showNotes ? <X/> : <BookOpenText/>}{showNotes ? 'Cerrar notas' : 'Notas para explicar'}</button>
-          {next ? <a className="next" href={`/conceptos/${next.slug}`}>Siguiente <ArrowRight/></a> : <a className="next practice" href="/practica">Ir a la práctica <ArrowRight/></a>}
+          {next ? <a className="next" href={sitePath(`/conceptos/${next.slug}/`)}>Siguiente <ArrowRight/></a> : <a className="next practice" href={sitePath('/practica/')}>Ir a la práctica <ArrowRight/></a>}
         </nav>
         {showNotes && <aside className="speaker-notes">
           <div><span>EXPLICACIÓN · {concept.duration ?? '10 min'}</span><p>{concept.explanation}</p></div>
