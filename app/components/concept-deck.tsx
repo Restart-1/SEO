@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, Headphones, MessageCircleQuestion, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, MessageCircleQuestion, Target } from 'lucide-react';
 import { useEffect } from 'react';
 import type { Concept, PresentationView } from '@/lib/course-data';
 import { presentationPages } from '@/lib/course-data';
@@ -45,7 +45,6 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
               <div className="activity-time"><Clock3/>{concept.duration}</div>
               <h1>{concept.title}</h1>
               <p>{concept.activity.instruction}</p>
-              {concept.activity.audioGuide && <div className="activity-audio-guide"><Headphones/><div><small>AUDIO PARA PREPARAR ESTA DINÁMICA</small><audio controls preload="metadata" src={sitePath(concept.activity.audioGuide)}>Tu navegador no puede reproducir este audio.</audio></div></div>}
               <div className="activity-output"><Target/><div><small>ENTREGABLE</small><b>{concept.activity.output}</b></div></div>
             </div>
             <div className="activity-steps">
