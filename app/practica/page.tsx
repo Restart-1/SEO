@@ -26,12 +26,11 @@ function clarityScore(value: string) {
   return Math.min(100, 40 + Math.min(words.length, 8) * 6 + (/como|que|mejor|para|cerca|precio/.test(normalize(value)) ? 12 : 0));
 }
 
-function fallbackIdeas(topic: string, industry: string) {
-  const context = industry.trim() ? ` para ${industry.trim()}` : '';
+function fallbackIdeas(topic: string) {
   return [
     `qué es ${topic}`,
-    `cómo usar ${topic}${context}`,
-    `${topic} paso a paso${context}`,
+    `cómo usar ${topic}`,
+    `${topic} paso a paso`,
     `errores comunes de ${topic}`,
     `mejor forma de aprender ${topic}`,
     `${topic} para principiantes`,
@@ -42,7 +41,7 @@ function normalize(value: string) {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 }
 
-function jsonpSuggestions(seed: string, source: 'google' | 'youtube', country: string) {
+function jsonpSuggestions(seed: string, source: 'google' | 'youtube') {
   return new Promise<string[]>((resolve, reject) => {
     const callback = `restartSuggest${Date.now()}${Math.random().toString(36).slice(2)}`;
     const script = document.createElement('script');
@@ -62,7 +61,7 @@ function jsonpSuggestions(seed: string, source: 'google' | 'youtube', country: s
     endpoint.searchParams.set('client', 'firefox');
     endpoint.searchParams.set('q', seed);
     endpoint.searchParams.set('hl', 'es');
-    endpoint.searchParams.set('gl', country);
+    endpoint.searchParams.set('gl', 'mx');
     endpoint.searchParams.set('callback', callback);
     if (source === 'youtube') endpoint.searchParams.set('ds', 'yt');
     script.onerror = () => finish(new Error('No se pudo consultar el servicio'));
@@ -91,9 +90,7 @@ export default function PracticePage() {
   const [screenText, setScreenText] = useState('');
   const [opening, setOpening] = useState('');
   const [topic, setTopic] = useState('');
-  const [industry, setIndustry] = useState('');
   const [source, setSource] = useState<'google' | 'youtube' | 'tiktok'>('google');
-  const [country, setCountry] = useState('mx');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [researching, setResearching] = useState(false);
   const [researchMode, setResearchMode] = useState<'live' | 'fallback' | 'guided' | null>(null);
@@ -113,29 +110,29 @@ export default function PracticePage() {
     if (!topic.trim()) return;
     setResearching(true);
     if (source === 'tiktok') {
-      const raw = fallbackIdeas(topic.trim(), industry.trim());
+      const raw = fallbackIdeas(topic.trim());
       setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'starter' })));
       setResearchMode('guided');
       setResearching(false);
       return;
     }
     try {
-      const query = `${topic.trim()} ${industry.trim()}`.trim();
+      const query = topic.trim();
       let data: { suggestions?: string[]; live?: boolean };
       if (process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true') {
-        const groups = await Promise.all([query, `cómo ${query}`, `${query} para`].map((seed) => jsonpSuggestions(seed, source, country)));
+        const groups = await Promise.all([query, `cómo ${query}`, `${query} para`].map((seed) => jsonpSuggestions(seed, source)));
         data = { suggestions: [...new Set(groups.flat().map((item) => item.trim()).filter(Boolean))].slice(0, 18), live: true };
       } else {
-        const params = new URLSearchParams({ q: query, source, country, language: 'es' });
+        const params = new URLSearchParams({ q: query, source, country: 'mx', language: 'es' });
         const response = await fetch(`${sitePath('/api/sugerencias')}?${params}`);
         data = await response.json() as { suggestions?: string[]; live?: boolean };
       }
-      const raw = data.suggestions?.length ? data.suggestions : fallbackIdeas(topic.trim(), industry.trim());
+      const raw = data.suggestions?.length ? data.suggestions : fallbackIdeas(topic.trim());
       const origin = data.suggestions?.length && data.live ? 'live' : 'fallback';
       setSuggestions(raw.map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin })));
       setResearchMode(data.suggestions?.length && data.live ? 'live' : 'fallback');
     } catch {
-      setSuggestions(fallbackIdeas(topic.trim(), industry.trim()).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'fallback' })));
+      setSuggestions(fallbackIdeas(topic.trim()).map((item) => ({ keyword: item, intent: detectIntent(item), clarity: clarityScore(item), origin: 'fallback' })));
       setResearchMode('fallback');
     } finally { setResearching(false); }
   };
@@ -153,7 +150,7 @@ export default function PracticePage() {
     });
     setObservedSuggestion('');
   };
-  const tiktokSearchUrl = `https://www.tiktok.com/search?q=${encodeURIComponent(`${topic.trim()} ${industry.trim()}`.trim())}`;
+  const tiktokSearchUrl = `https://www.tiktok.com/search?q=${encodeURIComponent(topic.trim())}`;
 
   return (
     <main className="restart-app">
@@ -164,9 +161,7 @@ export default function PracticePage() {
           <div className="research-heading"><div><span>01 / DESCUBRIMIENTO</span><h2>¿Qué está buscando la gente?</h2></div><div className="free-badge"><Database/> SIN API KEY · SIN DATOS INVENTADOS</div></div>
           <div className="research-form">
             <label><span>TEMA O PROBLEMA</span><input value={topic} onChange={(event) => setTopic(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. estados financieros, yoga, repostería…"/></label>
-            <label><span>GIRO O AUDIENCIA · OPCIONAL</span><input value={industry} onChange={(event) => setIndustry(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && research()} placeholder="Ej. emprendedores, restaurantes…"/></label>
             <label><span>FUENTE</span><select value={source} onChange={(event) => { setSource(event.target.value as 'google' | 'youtube' | 'tiktok'); setSuggestions([]); setResearchMode(null); }}><option value="google">Google</option><option value="youtube">YouTube</option><option value="tiktok">TikTok · guiado</option></select></label>
-            <label><span>PAÍS</span><select value={country} onChange={(event) => setCountry(event.target.value)}><option value="mx">México</option><option value="es">España</option><option value="ar">Argentina</option><option value="co">Colombia</option><option value="cl">Chile</option><option value="pe">Perú</option><option value="us">Estados Unidos</option></select></label>
             <button onClick={research} disabled={!topic.trim() || researching}>{researching ? <LoaderCircle className="spin"/> : <Search/>}{researching ? 'Buscando…' : 'Buscar ideas'}</button>
           </div>
           {source === 'tiktok' && topic.trim() && <div className="tiktok-guide">
