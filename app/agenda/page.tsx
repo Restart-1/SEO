@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ArrowRight, Coffee, FlaskConical, MessageCircleQuestion, Play, Search, Sparkles } from 'lucide-react';
 import { CourseHeader } from '@/app/components/course-header';
 import { concepts } from '@/lib/course-data';
@@ -19,6 +18,6 @@ export default function AgendaPage() {
       <div className="agenda-timeline">{blocks.map((block) => <div key={block.time}><i>{block.icon}</i><strong>{block.time}<small>MIN</small></strong><span><b>{block.title}</b><small>{block.detail}</small></span></div>)}</div>
       <footer><b>RESULTADO DE LA SESIÓN</b><p>Cada equipo termina con keyword, título, texto en pantalla y apertura para un video de estados financieros.</p></footer>
     </article>
-    <nav className="page-controls"><Link href="/"><span>←</span> Portada</Link><span>Agenda sugerida para Zoom</span><Link className="next" href={`/conceptos/${concepts[0].slug}`}>Comenzar <ArrowRight/></Link></nav>
+    <nav className="page-controls"><a href="/"><span>←</span> Portada</a><span>Agenda sugerida para Zoom</span><a className="next" href={`/conceptos/${concepts[0].slug}`}>Comenzar <ArrowRight/></a></nav>
   </section></main>;
 }

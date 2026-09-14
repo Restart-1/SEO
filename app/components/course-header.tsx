@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { CalendarClock, FlaskConical, Maximize2, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { presentationPages } from '@/lib/course-data';
@@ -18,26 +17,26 @@ export function CourseHeader({ active }: { active?: string }) {
     <>
       <div className="brand-stripe"><i /><i /></div>
       <header className="course-header">
-        <Link className="restart-logo" href="/" aria-label="Inicio RE:START"><span>RE:</span>START</Link>
+        <a className="restart-logo" href="/" aria-label="Inicio RE:START"><span>RE:</span>START</a>
         <div className="course-label"><small>CLASE GUIADA</small><b>SEO + AEO PARA CREADORES</b></div>
         <div className="header-tools">
-          <Link className="agenda-link" href="/agenda"><CalendarClock /> Agenda</Link>
-          <Link className="practice-link" href="/practica"><FlaskConical /> Práctica</Link>
+          <a className="agenda-link" href="/agenda"><CalendarClock /> Agenda</a>
+          <a className="practice-link" href="/practica"><FlaskConical /> Práctica</a>
           <button onClick={present}><Maximize2 /> Presentar</button>
           <button className="mobile-menu-button" onClick={() => setOpen(!open)} aria-label="Abrir navegación">{open ? <X /> : <Menu />}</button>
         </div>
       </header>
       <aside className={`course-drawer ${open ? 'open' : ''}`}>
         <span>RECORRIDO DE ENSEÑANZA</span>
-        <Link className={active === 'agenda' ? 'drawer-practice active' : 'drawer-practice'} href="/agenda"><CalendarClock /> Agenda de 150 minutos</Link>
+        <a className={active === 'agenda' ? 'drawer-practice active' : 'drawer-practice'} href="/agenda"><CalendarClock /> Agenda de 150 minutos</a>
         <nav>
           {presentationPages.map((page) => (
-            <Link key={page.slug} className={`${active === page.slug ? 'active' : ''} ${page.view !== 'idea' && page.view !== 'activity' ? 'subpage' : ''}`} href={`/conceptos/${page.slug}`} onClick={() => setOpen(false)}>
+            <a key={page.slug} className={`${active === page.slug ? 'active' : ''} ${page.view !== 'idea' && page.view !== 'activity' ? 'subpage' : ''}`} href={`/conceptos/${page.slug}`} onClick={() => setOpen(false)}>
               <em>{page.view === 'visual' ? '↳' : page.view === 'example' ? '↳' : page.concept.number}</em><div><small>{page.view === 'idea' ? 'IDEA' : page.view === 'visual' ? 'APOYO VISUAL' : page.view === 'example' ? 'EJEMPLO' : page.concept.eyebrow}</small><b>{page.view === 'idea' || page.view === 'activity' ? page.concept.title : page.view === 'visual' ? visualLabel(page.concept.visual) : page.concept.exampleLabel}</b></div>
-            </Link>
+            </a>
           ))}
         </nav>
-        <Link className={active === 'practica' ? 'drawer-practice active' : 'drawer-practice'} href="/practica"><FlaskConical /> Laboratorio de keywords</Link>
+        <a className={active === 'practica' ? 'drawer-practice active' : 'drawer-practice'} href="/practica"><FlaskConical /> Laboratorio de keywords</a>
       </aside>
     </>
   );

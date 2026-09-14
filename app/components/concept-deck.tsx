@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, MessageCircleQuestion, Target, TriangleAlert, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { Concept, PresentationView } from '@/lib/course-data';
@@ -81,9 +80,9 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
           <footer className="slide-footer"><span>RE:START · SEO + AEO PARA CREADORES</span><b>{concept.number}</b></footer>
         </article>
         <nav className="page-controls">
-          {previous ? <Link href={`/conceptos/${previous.slug}`}><ArrowLeft/> Anterior</Link> : <Link href="/"><ArrowLeft/> Portada</Link>}
+          {previous ? <a href={`/conceptos/${previous.slug}`}><ArrowLeft/> Anterior</a> : <a href="/"><ArrowLeft/> Portada</a>}
           <button className="notes-button" onClick={() => setShowNotes(!showNotes)}>{showNotes ? <X/> : <BookOpenText/>}{showNotes ? 'Cerrar notas' : 'Notas para explicar'}</button>
-          {next ? <Link className="next" href={`/conceptos/${next.slug}`}>Siguiente <ArrowRight/></Link> : <Link className="next practice" href="/practica">Ir a la práctica <ArrowRight/></Link>}
+          {next ? <a className="next" href={`/conceptos/${next.slug}`}>Siguiente <ArrowRight/></a> : <a className="next practice" href="/practica">Ir a la práctica <ArrowRight/></a>}
         </nav>
         {showNotes && <aside className="speaker-notes">
           <div><span>EXPLICACIÓN · {concept.duration ?? '10 min'}</span><p>{concept.explanation}</p></div>
