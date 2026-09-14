@@ -9,6 +9,8 @@ export type Concept = {
   expected?: string;
   badExample?: string;
   goodExample?: string;
+  comparisonImage?: string;
+  comparisonAlt?: string;
   activity?: { instruction: string; steps: [string, string, string]; output: string };
   explanation: string;
   example: string;
@@ -26,6 +28,7 @@ export const concepts: Concept[] = [
     keywords: ['ENTENDER', 'CLASIFICAR', 'MOSTRAR'],
     duration: '10 min', expected: 'El buscador conecta una consulta con la respuesta más relevante.',
     badExample: 'Publicar y esperar que Google “adivine” el tema.', goodExample: 'Definir la pregunta y responderla con señales coherentes.',
+    comparisonImage: '/restart-seo-comparison.png', comparisonAlt: 'Comparación entre publicar y esperar, y definir una pregunta con señales coherentes.',
     explanation: 'Google, YouTube y las redes necesitan clasificar millones de piezas. El SEO les entrega contexto: tema, intención, formato y evidencia de que la respuesta sí ayudó. Por eso el trabajo empieza antes de grabar: entendiendo qué necesita resolver la audiencia.',
     exampleLabel: 'DEL TEMA A LA BÚSQUEDA',
     example: '“Estados financieros” es un tema. “Cómo leer estados financieros paso a paso” expresa una necesidad concreta y anticipa la solución.',
@@ -40,6 +43,7 @@ export const concepts: Concept[] = [
     keywords: ['REPETICIÓN', 'ETIQUETAS', 'ENLACES'],
     duration: '10 min', expected: 'La técnica sigue siendo base, pero ya no sustituye la utilidad.',
     badExample: 'Repetir “estados financieros” en cada párrafo.', goodExample: 'Resolver una pregunta concreta con profundidad y naturalidad.',
+    comparisonImage: '/restart-before-after-keyword-stuffing.png', comparisonAlt: 'Comparación entre repetir una palabra clave y responder una pregunta con profundidad.',
     explanation: 'Durante años, la conversación de SEO giró alrededor de densidad de palabras clave, metaetiquetas, volumen de enlaces y pequeños ajustes técnicos. Algunas bases todavía importan, pero los sistemas actuales combinan contexto, calidad, autoridad y comportamiento humano. La técnica dejó de ser el objetivo; ahora sostiene una respuesta útil.',
     exampleLabel: 'ANTES → AHORA',
     example: 'Antes: repetir “estados financieros” muchas veces. Ahora: resolver con claridad una pregunta concreta y demostrar que la respuesta satisface a la audiencia.',
@@ -64,6 +68,7 @@ export const concepts: Concept[] = [
     keywords: ['APRENDER', 'HACER', 'OBTENER'],
     duration: '10 min', expected: 'Una misma temática puede requerir contenidos diferentes según la intención.',
     badExample: 'Usar el mismo video para cualquier búsqueda financiera.', goodExample: 'Cambiar formato y profundidad según lo que la persona quiere lograr.',
+    comparisonImage: '/restart-before-after-intent.png', comparisonAlt: 'Comparación entre usar un video genérico y adaptar el contenido a cada intención de búsqueda.',
     explanation: 'Una consulta puede buscar aprender, comparar, llegar a un lugar o realizar una acción. Antes de elegir una keyword, pregunta: “¿qué debería poder hacer la persona después de ver este contenido?”. Esa respuesta define el enfoque, la profundidad y el formato.',
     exampleLabel: 'MISMO TEMA, TRES INTENCIONES',
     example: '“Qué son los estados financieros” pide una definición. “Cómo leer un Estado de Resultados” pide un proceso. “Plantilla de Estado de Resultados” pide una herramienta.',
@@ -78,6 +83,7 @@ export const concepts: Concept[] = [
     keywords: ['ACCIÓN', 'TEMA', 'CONTEXTO'],
     duration: '10 min', expected: 'Una keyword útil combina lo que harán, el tema y un contexto.',
     badExample: '“Finanzas empresas información”.', goodExample: '“Cómo leer estados financieros paso a paso”.',
+    comparisonImage: '/restart-before-after-keywords.png', comparisonAlt: 'Comparación entre términos vagos y una palabra clave clara y natural.',
     explanation: 'Las plataformas entienden cada vez mejor el lenguaje conversacional. Conviene observar las sugerencias del buscador y las preguntas reales de la audiencia, y después redactar una frase natural. Las palabras clave deben guiar el guion; no tienen que aparecer de forma mecánica en cada línea.',
     exampleLabel: 'ANATOMÍA DE UNA KEYWORD',
     example: 'cómo leer + estados financieros + paso a paso para principiantes',
@@ -102,6 +108,7 @@ export const concepts: Concept[] = [
     keywords: ['AUDIO', 'TEXTO', 'RETENCIÓN'],
     duration: '10 min', expected: 'Identifican señales editoriales y señales de comportamiento.',
     badExample: 'Título claro, pero apertura sobre otro asunto.', goodExample: 'Audio, texto y desarrollo confirman la misma promesa.',
+    comparisonImage: '/restart-before-after-signals.png', comparisonAlt: 'Comparación entre señales contradictorias y una promesa coherente en audio, texto y desarrollo.',
     explanation: 'TikTok, Instagram, YouTube y Google reúnen varias pistas para clasificar una pieza. Las señales editoriales dicen de qué trata; la retención, los guardados, las compartidas y otras interacciones ayudan a estimar si cumplió la promesa. Una señal aislada no reemplaza una experiencia útil.',
     exampleLabel: 'UNA IDEA, CINCO LUGARES',
     example: 'Di “cómo leer un Estado de Resultados”, muéstralo en pantalla, úsalo como base del título, descríbelo con naturalidad y desarrolla exactamente ese proceso.',
@@ -116,6 +123,7 @@ export const concepts: Concept[] = [
     keywords: ['CONSULTA', 'CONTEXTO', 'RESPUESTA'],
     duration: '10 min', expected: 'TikTok compara la consulta con señales del contenido y respuesta de la audiencia.',
     badExample: 'Depender únicamente de #fyp y #viral.', goodExample: 'Nombrar la pregunta en audio, pantalla y caption, y responderla pronto.',
+    comparisonImage: '/restart-before-after-tiktok.png', comparisonAlt: 'Comparación entre depender de hashtags genéricos y responder una pregunta clara en TikTok.',
     explanation: 'Cuando alguien busca en TikTok, la plataforma compara la consulta con señales del video: palabras pronunciadas, texto en pantalla, caption, hashtags específicos y tema de la cuenta. Después usa señales de experiencia —como retención, repetición, guardados y compartidas— para ajustar qué resultados parecen más útiles.',
     exampleLabel: 'RECORRIDO DE UNA BÚSQUEDA',
     example: 'La persona escribe “cómo leer un estado de resultados”. TikTok identifica videos cuyo audio y texto responden esa frase, y prioriza los que además mantienen la atención.',
@@ -140,6 +148,7 @@ export const concepts: Concept[] = [
     keywords: ['CONTENIDO', 'AUTORIDAD', 'PRESENCIA'],
     duration: '10 min', expected: 'La confianza surge de contenido útil, evidencia y presencia consistente.',
     badExample: 'Artículo genérico sin autor, ejemplos ni referencias.', goodExample: 'Experiencia propia, fuente identificable y datos verificables.',
+    comparisonImage: '/restart-before-after-authority.png', comparisonAlt: 'Comparación entre contenido genérico y una fuente con autor, ejemplos, datos y referencias.',
     explanation: 'El primer video resume el SEO actual en contenido, autoridad y presencia. El contenido responde con profundidad; la autoridad se construye con experiencia, referencias y menciones; la presencia distribuye esa evidencia en buscadores, directorios y espacios relevantes. El SEO técnico sigue siendo la base: sitio rápido, móvil, seguro y comprensible.',
     exampleLabel: 'DE PIEZA AISLADA A FUENTE',
     example: 'Un tutorial firmado por una persona experta, acompañado por una plantilla, preguntas frecuentes, ejemplos propios y referencias consistentes es más verificable que un texto genérico.',
@@ -154,6 +163,7 @@ export const concepts: Concept[] = [
     keywords: ['RESPONDER', 'ESTRUCTURAR', 'CITAR'],
     duration: '10 min', expected: 'AEO facilita respuestas directas sin abandonar las bases del SEO.',
     badExample: 'Introducción larga antes de responder.', goodExample: 'Respuesta directa primero; evidencia y explicación después.',
+    comparisonImage: '/restart-before-after-aeo.png', comparisonAlt: 'Comparación entre una introducción larga y una respuesta directa con evidencia y explicación.',
     explanation: 'Los agentes buscan fragmentos que respondan preguntas concretas, conecten conceptos y presenten hechos fáciles de verificar. Ayudan los encabezados descriptivos, preguntas y respuestas, tablas, listas, datos estructurados y actualizaciones visibles. El SEO tradicional no desaparece: una buena base facilita que esas fuentes sean encontradas.',
     exampleLabel: 'RESPUESTA EXTRAÍBLE',
     example: 'Pregunta: “¿Cuáles son los tres estados financieros clave?”. Respuesta directa: Balance General, Estado de Resultados y Flujo de Efectivo. Después se explica la función de cada uno.',

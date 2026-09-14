@@ -72,7 +72,7 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
           </div> : null}
           {view === 'example' ? <div className="example-stage">
             <header><span>{concept.number} / EJEMPLO</span><h1>{concept.exampleLabel}</h1></header>
-            {concept.slug === 'seo' ? <div className="provided-comparison" style={{ backgroundImage: `url(${sitePath('/restart-seo-comparison.png')})` }} role="img" aria-label="Comparación entre publicar y esperar, y definir una pregunta con señales coherentes" /> : concept.badExample && concept.goodExample ? <div className="example-compare">
+            {concept.comparisonImage ? <div className="provided-comparison" style={{ backgroundImage: `url(${sitePath(concept.comparisonImage)})` }} role="img" aria-label={concept.comparisonAlt} /> : concept.badExample && concept.goodExample ? <div className="example-compare">
               <section><span><X/> ANTES</span><p>{concept.badExample}</p></section>
               <section><span><Check/> MEJOR</span><p>{concept.goodExample}</p></section>
             </div> : null}
