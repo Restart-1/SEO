@@ -1,0 +1,91 @@
+Hola. Esta es tu guía para facilitar la actividad: ¿Base técnica o truco obsoleto?
+
+La intención de esta dinámica no es que tus alumnos memoricen una lista de reglas. Lo importante es que aprendan a distinguir entre una acción que mejora realmente el contenido y una acción que solamente intenta provocar al algoritmo.
+
+Antes de mostrar la diapositiva, respira, baja un poco la velocidad y presenta la actividad con seguridad. Puedes decir lo siguiente:
+
+“Vamos a revisar cinco decisiones para posicionar un video sobre estados financieros. En cada caso quiero que voten con una letra. B significa base. T significa truco. Y D significa depende.”
+
+Haz una pausa corta. Después explica el criterio:
+
+“Una base ayuda a entender, acceder o verificar el contenido. Un truco persigue una señal del algoritmo sin mejorar la respuesta. Y si votamos depende, tendremos que explicar exactamente cuál es la condición.”
+
+En Zoom puedes pedirles que escriban la letra en el chat. También puedes solicitar que levanten un dedo para base, dos para truco y tres para depende. El chat funciona mejor si el grupo es grande. Los dedos funcionan mejor si quieres una respuesta rápida y visual.
+
+Ahora presenta el primer caso.
+
+“Caso uno. El video se titula: Cómo leer un Estado de Resultados paso a paso. ¿Base, truco o depende?”
+
+Espera entre cinco y ocho segundos. No respondas inmediatamente. Deja que aparezcan varios votos. Luego pregunta:
+
+“¿Qué problema resuelve este título?”
+
+La respuesta sugerida es base. El título permite que una persona y el buscador anticipen exactamente qué aprenderán. Declara el tema, la acción y el formato. Puedes cerrar diciendo:
+
+“Correcto. Es una base porque aporta claridad aunque el algoritmo no la midiera.”
+
+Pasa al segundo caso.
+
+“La descripción repite la frase estados financieros dieciocho veces. ¿Base, truco o depende?”
+
+La respuesta sugerida es truco. Repetir una frase no añade contexto nuevo. Puede hacer que el texto sea difícil de leer y busca aumentar artificialmente una señal. Explica:
+
+“La palabra clave sí puede aparecer, pero debe hacerlo donde ayude a comprender. Repetirla sin propósito persigue la señal y deteriora la respuesta.”
+
+Tercer caso.
+
+“El video incluye subtítulos correctos y durante la explicación nombra ingresos, costos y utilidad. ¿Base, truco o depende?”
+
+La respuesta es base. Los subtítulos hacen accesible el contenido, ayudan a comprenderlo sin audio y ofrecen contexto coherente. Además, nombrar ingresos, costos y utilidad demuestra que el video desarrolla la promesa del título.
+
+Puedes decir:
+
+“Aquí la técnica sirve a dos personas al mismo tiempo: a la audiencia que necesita leer el contenido y al sistema que necesita clasificarlo.”
+
+Cuarto caso.
+
+“Un blog de contabilidad coloca un enlace hacia nuestro tutorial. ¿Base, truco o depende?”
+
+La mejor respuesta es depende. Si el enlace es una recomendación editorial real, porque el tutorial es útil, puede ser una señal de autoridad. Si compramos cientos de enlaces irrelevantes, se convierte en manipulación.
+
+Subraya la condición:
+
+“No evaluamos solamente la existencia del enlace. Evaluamos por qué existe y si conecta fuentes relacionadas de manera natural.”
+
+Quinto caso.
+
+“Publicamos el video con las etiquetas hashtag f y p, hashtag viral y otras veinticinco etiquetas genéricas. ¿Base, truco o depende?”
+
+La respuesta sugerida es truco, o idea incompleta. Esas etiquetas no describen qué pregunta responde el video. Una etiqueta específica, como Estado de Resultados o Finanzas para Emprendedores, puede aportar contexto. Una colección de etiquetas genéricas no sustituye la claridad.
+
+Para profundizar, haz esta pregunta:
+
+“¿Esta práctica seguiría teniendo valor si el buscador no la midiera?”
+
+Esa pregunta es la llave de la actividad. Si la acción seguiría siendo útil porque ayuda a entender, consumir o verificar el contenido, probablemente es una base. Si solamente existe para provocar una reacción del algoritmo, probablemente es un truco.
+
+Si el grupo se queda callado, no expliques todos los casos de inmediato. Resuelve solamente el primero como ejemplo. Di:
+
+“Este título es una base porque permite anticipar la respuesta. Ahora usen exactamente el mismo criterio para el segundo caso.”
+
+Después vuelve a abrir la votación.
+
+La distribución sugerida es la siguiente. Un minuto para explicar base, truco y depende. Cinco minutos para revisar los cinco casos. Dos minutos para escuchar justificaciones diferentes. Un minuto para reformular una práctica mala. Y un minuto para construir la regla de cierre.
+
+Para reformular, toma el caso de las etiquetas genéricas y pregunta:
+
+“¿Cómo lo convertiríamos en una práctica útil?”
+
+Una respuesta posible sería utilizar pocas etiquetas específicas, como Estados Financieros, Estado de Resultados y Finanzas para Emprendedores. Otra respuesta sería invertir ese esfuerzo en un caption que explique con claridad qué aprenderá la persona.
+
+Cierra la dinámica con esta frase:
+
+“Una base resuelve un problema real. Un truco persigue la señal sin mejorar la respuesta. Y cuando decimos depende, debemos nombrar la condición.”
+
+Haz una última pausa y conecta con el siguiente tema:
+
+“Ahora que podemos distinguir una base de un truco, dejaremos de preguntar cuántas veces debemos repetir una palabra. La pregunta importante será qué quiere lograr la persona que está buscando.”
+
+Ese cierre te lleva naturalmente al concepto de intención de búsqueda.
+
+Recuerda el tono. No presentes la actividad como un examen con una única respuesta secreta. Preséntala como una conversación para justificar decisiones. Escucha primero, valida el razonamiento correcto y después completa la explicación.

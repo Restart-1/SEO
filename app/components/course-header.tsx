@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpenText, Download, FlaskConical, Maximize2, Menu, X } from 'lucide-react';
+import { BookOpenText, FlaskConical, Maximize2, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { presentationPages } from '@/lib/course-data';
 import { sitePath } from '@/lib/site-path';
@@ -37,7 +37,6 @@ export function CourseHeader({ active }: { active?: string }) {
             </a>
           ))}
         </nav>
-        <a className="drawer-practice notes-download" href={sitePath('/notas-del-orador-seo-aeo.pdf')} download><Download /> Notas del orador · PDF</a>
         <a className={active === 'practica' ? 'drawer-practice active' : 'drawer-practice'} href={sitePath('/practica/')}><FlaskConical /> Laboratorio de keywords</a>
       </aside>
     </>

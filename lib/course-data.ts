@@ -19,6 +19,7 @@ export type Concept = {
     exampleTitle: string;
     exampleItems: string[];
     debrief: string;
+    audioGuide?: string;
   };
   explanation: string;
   example: string;
@@ -81,6 +82,7 @@ export const concepts: Concept[] = [
         'TRUCO · Usar #fyp, #viral y 25 etiquetas genéricas. No explica la pregunta ni la audiencia.',
       ],
       debrief: 'Cierra diciendo: “Una base resuelve un problema real. Un truco persigue la señal sin mejorar la respuesta. Si dijimos depende, debemos nombrar la condición”.',
+      audioGuide: '/audio-guia-base-tecnica-o-truco.wav',
     },
   },
   {

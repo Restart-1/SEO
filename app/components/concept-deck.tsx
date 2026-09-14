@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, MessageCircleQuestion, Target, TriangleAlert, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock3, Headphones, MessageCircleQuestion, Target } from 'lucide-react';
+import { useEffect } from 'react';
 import type { Concept, PresentationView } from '@/lib/course-data';
 import { presentationPages } from '@/lib/course-data';
 import { sitePath } from '@/lib/site-path';
@@ -20,7 +20,6 @@ const visualTitles: Record<Concept['visual'], string> = {
 };
 
 export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; view: PresentationView; pageSlug: string }) {
-  const [showNotes, setShowNotes] = useState(false);
   const index = presentationPages.findIndex((item) => item.slug === pageSlug);
   const previous = presentationPages[index - 1];
   const next = presentationPages[index + 1];
@@ -46,6 +45,7 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
               <div className="activity-time"><Clock3/>{concept.duration}</div>
               <h1>{concept.title}</h1>
               <p>{concept.activity.instruction}</p>
+              {concept.activity.audioGuide && <div className="activity-audio-guide"><Headphones/><div><small>AUDIO PARA PREPARAR ESTA DINÁMICA</small><audio controls preload="metadata" src={sitePath(concept.activity.audioGuide)}>Tu navegador no puede reproducir este audio.</audio></div></div>}
               <div className="activity-output"><Target/><div><small>ENTREGABLE</small><b>{concept.activity.output}</b></div></div>
             </div>
             <div className="activity-steps">
@@ -87,16 +87,9 @@ export function ConceptDeck({ concept, view, pageSlug }: { concept: Concept; vie
         </article>
         <nav className="page-controls">
           {previous ? <a href={sitePath(`/conceptos/${previous.slug}/`)}><ArrowLeft/> Anterior</a> : <a href={sitePath('/')}><ArrowLeft/> Portada</a>}
-          <button className="notes-button" onClick={() => setShowNotes(!showNotes)}>{showNotes ? <X/> : <BookOpenText/>}{showNotes ? 'Cerrar notas' : 'Notas para explicar'}</button>
+          <a className="topics-control" href={sitePath('/agenda/')}><BookOpenText/> Temas</a>
           {next ? <a className="next" href={sitePath(`/conceptos/${next.slug}/`)}>Siguiente <ArrowRight/></a> : <a className="next practice" href={sitePath('/practica/')}>Ir a la práctica <ArrowRight/></a>}
         </nav>
-        {showNotes && <aside className="speaker-notes">
-          <div><span>EXPLICACIÓN · {concept.duration ?? '10 min'}</span><p>{concept.explanation}</p></div>
-          <div className="note-warning"><TriangleAlert/><section><span>ACLARACIÓN</span><p>{concept.misconception}</p></section></div>
-          <div className="note-prompt"><MessageCircleQuestion/><section><span>PREGUNTA AL GRUPO</span><p>{concept.teacherPrompt}</p></section></div>
-          <div className="note-expected"><Check/><section><span>RESPUESTA ESPERADA</span><p>{concept.expected}</p></section></div>
-          {concept.activity && <div className="activity-notes-extra"><span>GUIÓN PARA DECIRLO</span><p>{concept.activity.facilitatorScript}</p><span>EJEMPLO SUGERIDO</span>{concept.activity.exampleItems.map((item) => <p key={item}>• {item}</p>)}</div>}
-        </aside>}
       </section>
     </main>
   );
