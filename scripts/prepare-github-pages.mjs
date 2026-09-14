@@ -3,6 +3,10 @@ import { dirname, join, relative } from 'node:path';
 
 const outputDir = join(process.cwd(), 'dist', 'client');
 
+// Vinext materializes assetPrefix inside the export directory. GitHub Pages
+// already mounts this directory at /SEO, so publish the assets one level up.
+await cp(join(outputDir, 'SEO', '_next'), join(outputDir, '_next'), { recursive: true });
+
 async function collectHtmlFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
